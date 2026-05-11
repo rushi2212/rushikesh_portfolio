@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   ChevronLeft,
   ChevronRight,
+  Download,
   Mail,
   Phone,
   Linkedin,
@@ -12,11 +13,15 @@ import {
   Code,
   Users,
   Zap,
+  Server,
+  Bot,
   Eye,
   Send,
   User,
   MessageCircle,
   Instagram,
+  Moon,
+  Sun,
 } from "lucide-react";
 
 const App = () => {
@@ -27,6 +32,7 @@ const App = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("");
+  const [cursor, setCursor] = useState({ x: 0, y: 0, visible: false });
 
   const handleChange = (e) => {
     setFormData({
@@ -39,7 +45,6 @@ const App = () => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus("");
-
     try {
       const response = await fetch("https://formspree.io/f/mvgqojob", {
         method: "POST",
@@ -65,16 +70,56 @@ const App = () => {
   const [currentCertificate, setCurrentCertificate] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [scrollY, setScrollY] = useState(0);
+  const [theme, setTheme] = useState("dark");
+
+  const isDark = theme === "dark";
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1200);
+    const savedTheme = localStorage.getItem("portfolio-theme");
+
+    if (savedTheme === "dark" || savedTheme === "light") {
+      setTheme(savedTheme);
+    }
+
+    const timer = setTimeout(() => setIsLoading(false), 1500);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", isDark);
+    document.documentElement.style.colorScheme = theme;
+    localStorage.setItem("portfolio-theme", theme);
+  }, [isDark, theme]);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handlePointerMove = (event) => {
+      setCursor({
+        x: event.clientX,
+        y: event.clientY,
+        visible: true,
+      });
+    };
+
+    const handlePointerLeave = () => {
+      setCursor((currentCursor) => ({
+        ...currentCursor,
+        visible: false,
+      }));
+    };
+
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerleave", handlePointerLeave);
+
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerleave", handlePointerLeave);
+    };
   }, []);
 
   const certificates = [
@@ -124,7 +169,6 @@ const App = () => {
       certificateId: "GCO-2303-251",
       image: "/Ai-workshop.jpg",
     },
-
     {
       id: 7,
       title: "React.js Course",
@@ -289,7 +333,7 @@ const App = () => {
     {
       category: "Backend Development",
       items: ["Node.js", "Express.js", "Python", "Flask", "RESTful APIs"],
-      
+      icon: <Server size={24} />,
       color: "from-green-500 to-emerald-500",
     },
     {
@@ -301,7 +345,7 @@ const App = () => {
     {
       category: "AI & ML Technologies",
       items: ["Google Gemini", "Tavily API", "ChatGPT", "OpenAI API"],
-      
+      icon: <Bot size={24} />,
       color: "from-orange-500 to-red-500",
     },
   ];
@@ -360,46 +404,54 @@ const App = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center relative">
+      <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.22),_transparent_30%),radial-gradient(circle_at_bottom_right,_rgba(14,165,233,0.18),_transparent_25%),linear-gradient(135deg,_#020617,_#0f172a)]"></div>
+
         {/* Subtle background pattern */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-20 left-20 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
-          <div className="absolute bottom-20 right-20 w-80 h-80 bg-indigo-100 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-700"></div>
+        <div className="absolute inset-0 opacity-35">
+          <div className="absolute top-20 left-20 w-64 h-64 bg-blue-500/20 rounded-full mix-blend-screen filter blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-20 w-80 h-80 bg-cyan-400/15 rounded-full mix-blend-screen filter blur-3xl animate-pulse delay-700"></div>
         </div>
 
         {/* Main content */}
-        <div className="text-center relative z-10">
-          {/* Clean loading spinner */}
+        <div className="text-center relative z-10 px-6">
           <div className="relative mb-8">
-            <div className="w-12 h-12 mx-auto relative">
-              {/* Outer ring */}
-              <div className="absolute inset-0 rounded-full border-3 border-slate-200"></div>
-
-              {/* Active ring */}
-              <div className="absolute inset-0 rounded-full border-3 border-transparent border-t-blue-600 animate-spin"></div>
-
-              {/* Inner accent */}
+            <div className="w-20 h-20 mx-auto relative">
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500 via-cyan-400 to-indigo-500 blur-xl opacity-35 animate-pulse"></div>
+              <div className="absolute inset-2 rounded-full border border-white/10 bg-slate-900/80 backdrop-blur-md shadow-2xl"></div>
+              <div className="absolute inset-0 rounded-full border-2 border-white/10"></div>
+              <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-cyan-300 border-r-blue-400 animate-spin"></div>
               <div
-                className="absolute inset-2 rounded-full border-2 border-transparent border-t-indigo-400 animate-spin"
+                className="absolute inset-3 rounded-full border-2 border-transparent border-b-indigo-300 animate-spin"
                 style={{
-                  animationDuration: "1.5s",
+                  animationDuration: "1.6s",
                   animationDirection: "reverse",
                 }}
               ></div>
+              <div className="absolute inset-0 flex items-center justify-center text-xs font-bold tracking-[0.35em] text-white/80">
+                RR
+              </div>
             </div>
           </div>
 
-          {/* Minimal text */}
-          <div className="space-y-6">
-            <p className="text-slate-600 text-sm">Loading...</p>
+          <div className="space-y-6 max-w-md mx-auto">
+            <div>
+              <p className="text-cyan-200 text-sm uppercase tracking-[0.4em] mb-2">
+                Preparing portfolio
+              </p>
+            </div>
 
-            {/* Progress indicator */}
-            <div className="w-48 mx-auto">
-              <div className="h-1 bg-slate-200 rounded-full overflow-hidden">
+            <div className="w-full mx-auto space-y-3">
+              <div className="h-2 bg-white/10 rounded-full overflow-hidden border border-white/10">
                 <div
-                  className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-1000 ease-out"
-                  style={{ width: "65%" }}
+                  className="h-full bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 rounded-full transition-all duration-1000 ease-out shadow-[0_0_24px_rgba(56,189,248,0.45)]"
+                  style={{ width: "78%" }}
                 ></div>
+              </div>
+              <div className="flex items-center justify-between text-xs uppercase tracking-[0.3em] text-slate-300">
+                <span>Assets</span>
+                <span>Theme</span>
+                <span>Layout</span>
               </div>
             </div>
           </div>
@@ -413,55 +465,128 @@ const App = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div
+      className={`min-h-screen transition-colors duration-500 ${
+        isDark
+          ? "bg-[#050816] text-slate-100"
+          : "bg-gradient-to-br from-slate-50 to-blue-50 text-slate-900"
+      }`}
+      style={{ colorScheme: theme }}
+    >
+      <div
+        className={
+          isDark
+            ? "pointer-events-none fixed left-0 top-0 z-[9999] hidden h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-300/60 shadow-[0_0_18px_rgba(34,211,238,0.35)] md:block"
+            : "pointer-events-none fixed left-0 top-0 z-[9999] hidden h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-600/50 shadow-[0_0_18px_rgba(37,99,235,0.22)] md:block"
+        }
+        style={{
+          transform: `translate(${cursor.x}px, ${cursor.y}px) translate(-50%, -50%)`,
+          opacity: cursor.visible ? 1 : 0,
+          transition: "transform 80ms linear, opacity 220ms ease",
+        }}
+      />
+
       {/* Navigation */}
       <nav
         className={`fixed top-0 w-full z-50 transition-all duration-300 ${
           scrollY > 50
-            ? "bg-white/90 backdrop-blur-md shadow-lg"
+            ? isDark
+              ? "bg-slate-950/85 backdrop-blur-md shadow-2xl shadow-black/20 border-b border-white/5"
+              : "bg-white/90 backdrop-blur-md shadow-lg"
             : "bg-transparent"
         }`}
       >
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="text-2xl font-bold text-slate-800">RR</div>
-            <div className="hidden md:flex items-center space-x-8">
-              <a
-                href="#about"
-                className="text-slate-600 hover:text-blue-600 transition-colors font-medium"
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 text-white font-bold shadow-lg shadow-blue-500/25">
+                RR
+              </div>
+              <div
+                className={
+                  isDark
+                    ? "text-lg font-semibold text-slate-100"
+                    : "text-lg font-semibold text-slate-900"
+                }
               >
-                About
-              </a>
-              <a
-                href="#skills"
-                className="text-slate-600 hover:text-blue-600 transition-colors font-medium"
-              >
-                Skills
-              </a>
-              <a
-                href="#projects"
-                className="text-slate-600 hover:text-blue-600 transition-colors font-medium"
-              >
-                Projects
-              </a>
-              <a
-                href="#achievements"
-                className="text-slate-600 hover:text-blue-600 transition-colors font-medium"
-              >
-                Achievements
-              </a>
-              <a
-                href="#certifications"
-                className="text-slate-600 hover:text-blue-600 transition-colors font-medium"
-              >
-                Certifications
-              </a>
-              <a
-                href="#contact"
-                className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-all"
-              >
-                Contact
-              </a>
+                Rushikesh
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="hidden md:flex items-center space-x-8">
+                <a
+                  href="#about"
+                  className={
+                    isDark
+                      ? "text-slate-300 hover:text-cyan-300 transition-colors font-medium"
+                      : "text-slate-600 hover:text-blue-600 transition-colors font-medium"
+                  }
+                >
+                  About
+                </a>
+                <a
+                  href="#skills"
+                  className={
+                    isDark
+                      ? "text-slate-300 hover:text-cyan-300 transition-colors font-medium"
+                      : "text-slate-600 hover:text-blue-600 transition-colors font-medium"
+                  }
+                >
+                  Skills
+                </a>
+                <a
+                  href="#projects"
+                  className={
+                    isDark
+                      ? "text-slate-300 hover:text-cyan-300 transition-colors font-medium"
+                      : "text-slate-600 hover:text-blue-600 transition-colors font-medium"
+                  }
+                >
+                  Projects
+                </a>
+                <a
+                  href="#achievements"
+                  className={
+                    isDark
+                      ? "text-slate-300 hover:text-cyan-300 transition-colors font-medium"
+                      : "text-slate-600 hover:text-blue-600 transition-colors font-medium"
+                  }
+                >
+                  Achievements
+                </a>
+                <a
+                  href="#certifications"
+                  className={
+                    isDark
+                      ? "text-slate-300 hover:text-cyan-300 transition-colors font-medium"
+                      : "text-slate-600 hover:text-blue-600 transition-colors font-medium"
+                  }
+                >
+                  Certifications
+                </a>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setTheme((currentTheme) =>
+                      currentTheme === "dark" ? "light" : "dark",
+                    )
+                  }
+                  className={
+                    isDark
+                      ? "inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-100 backdrop-blur-md transition-all hover:border-blue-400/40 hover:bg-white/10"
+                      : "inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-slate-100 text-slate-800 shadow-sm transition-all hover:border-blue-400/40 hover:bg-slate-200"
+                  }
+                  aria-label="Toggle theme"
+                >
+                  {isDark ? <Sun size={16} /> : <Moon size={16} />}
+                </button>
+                <a
+                  href="#contact"
+                  className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-all"
+                >
+                  Contact
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -472,23 +597,60 @@ const App = () => {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
           <div className="lg:w-1/2">
             <div className="space-y-6">
-              <div className="inline-block bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium">
-                👋 Hello, I'm
+              <div
+                className={
+                  isDark
+                    ? "inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-cyan-200"
+                    : "inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-blue-700"
+                }
+              >
+                <span className="h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_16px_rgba(34,211,238,0.8)]"></span>
+                coder mode
               </div>
-              <h1 className="text-5xl lg:text-6xl font-bold text-slate-800 leading-tight">
+              <h1
+                className={
+                  isDark
+                    ? "text-5xl lg:text-6xl font-bold text-slate-100 leading-tight"
+                    : "text-5xl lg:text-6xl font-bold text-slate-900 leading-tight"
+                }
+              >
                 Rushikesh
-                <span className="block text-blue-600">Raut</span>
+                <span className="block text-cyan-400">Raut</span>
               </h1>
-              <p className="text-xl text-slate-600 leading-relaxed">
+              <p
+                className={
+                  isDark
+                    ? "text-xl text-slate-300 leading-relaxed"
+                    : "text-xl text-slate-600 leading-relaxed"
+                }
+              >
                 Computer Engineering Student & Full-Stack Developer passionate
                 about creating innovative solutions with AI and modern web
                 technologies.
               </p>
-              <p className="text-lg text-slate-500 leading-relaxed">
+              <p
+                className={
+                  isDark
+                    ? "text-lg text-slate-400 leading-relaxed"
+                    : "text-lg text-slate-500 leading-relaxed"
+                }
+              >
                 Currently pursuing Computer Engineering at GCOEARA, Pune, with
                 expertise in MERN stack, AI integration, and modern web
                 development.
               </p>
+              <div
+                className={
+                  isDark
+                    ? "inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-sm text-slate-300 shadow-lg shadow-black/10"
+                    : "inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white/80 px-4 py-3 text-sm text-slate-600 shadow-lg shadow-slate-200/60"
+                }
+              >
+                <span className="font-semibold text-cyan-400">&lt;/&gt;</span>
+                <span>
+                  Building clean, scalable interfaces and AI-powered apps
+                </span>
+              </div>
               <div className="flex flex-wrap gap-4 pt-4">
                 <a
                   href="mailto:rushikesh220703@gmail.com"
@@ -503,6 +665,14 @@ const App = () => {
                 >
                   <Eye size={20} />
                   View Work
+                </a>
+                <a
+                  href="/Rushikesh_Resume.pdf"
+                  download="Rushikesh_Resume.pdf"
+                  className="inline-flex items-center gap-2 border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 py-3 rounded-full transition-all transform hover:scale-105"
+                >
+                  <Download size={20} />
+                  Resume
                 </a>
               </div>
               <div className="flex flex-wrap gap-6 pt-4 text-slate-500">
@@ -525,22 +695,37 @@ const App = () => {
             </div>
           </div>
           <div className="lg:w-1/2 flex justify-center">
-            <div className="relative">
-              <div className="w-80 h-80 rounded-2xl bg-gradient-to-br from-blue-500 to-teal-500 p-1 shadow-2xl transform rotate-3">
-                <div className="w-full h-full rounded-2xl bg-white flex items-center justify-center">
-                  <img
-                    src="/rishikesh.png"
-                    alt="Rushikesh Raut"
-                    className="w-72 h-72 rounded-xl object-cover"
-                  />
-                </div>
-              </div>
-              <div className="absolute -top-4 -right-4 w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center shadow-lg animate-pulse">
-                <Code size={24} className="text-white" />
-              </div>
-              <div className="absolute -bottom-4 -left-4 w-12 h-12 bg-teal-500 rounded-full flex items-center justify-center shadow-lg">
-                <Zap size={16} className="text-white" />
-              </div>
+            <div className="relative flex w-full max-w-lg items-center justify-center py-10">
+              <div
+                className={
+                  isDark
+                    ? "absolute left-0 top-1/2 h-56 w-24 -translate-y-1/2 rounded-full bg-cyan-400/30 blur-3xl"
+                    : "absolute left-0 top-1/2 h-56 w-24 -translate-y-1/2 rounded-full bg-cyan-300/35 blur-3xl"
+                }
+              ></div>
+              <div
+                className={
+                  isDark
+                    ? "absolute right-0 top-1/2 h-56 w-24 -translate-y-1/2 rounded-full bg-blue-500/25 blur-3xl"
+                    : "absolute right-0 top-1/2 h-56 w-24 -translate-y-1/2 rounded-full bg-blue-300/30 blur-3xl"
+                }
+              ></div>
+              <div
+                className={
+                  isDark
+                    ? "absolute inset-x-10 bottom-4 h-16 rounded-full bg-slate-900/20 blur-2xl"
+                    : "absolute inset-x-10 bottom-4 h-16 rounded-full bg-slate-300/30 blur-2xl"
+                }
+              ></div>
+              <img
+                src="/rushikesh.png"
+                alt="Rushikesh Raut"
+                className={
+                  isDark
+                    ? "relative z-10 w-full max-w-md rounded-[1.75rem] object-cover object-top shadow-[0_24px_70px_rgba(15,23,42,0.25)]"
+                    : "relative z-10 w-full max-w-md rounded-[1.75rem] object-cover object-top"
+                }
+              />
             </div>
           </div>
         </div>
@@ -736,37 +921,73 @@ const App = () => {
             </p>
           </div>
           <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
+            <div
+              className={
+                isDark
+                  ? "bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100"
+                  : "bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100"
+              }
+            >
               <div className="flex items-center justify-between p-6 min-h-[500px]">
                 <button
                   onClick={prevCertificate}
-                  className="p-3 rounded-full bg-slate-100 hover:bg-slate-200 transition-all transform hover:scale-110 flex-shrink-0"
+                  className={
+                    isDark
+                      ? "p-3 rounded-full bg-slate-100 hover:bg-slate-200 transition-all transform hover:scale-110 flex-shrink-0"
+                      : "p-3 rounded-full bg-white/70 hover:bg-white transition-all transform hover:scale-110 flex-shrink-0 border border-slate-200"
+                  }
                 >
                   <ChevronLeft size={24} className="text-slate-600" />
                 </button>
 
-                <div className="flex-1 mx-8">
+                <div className="flex-1 mx-4 sm:mx-8 w-full">
                   <div className="text-center">
-                    <div className="h-64 flex items-center justify-center mb-6">
+                    <div className="h-72 sm:h-64 flex items-center justify-center mb-6 w-full">
                       <img
                         src={certificates[currentCertificate].image}
                         alt={certificates[currentCertificate].title}
-                        className="max-w-full max-h-full object-contain rounded-lg shadow-lg"
+                        className={
+                          isDark
+                            ? "w-full max-w-[92vw] sm:max-w-full max-h-full object-contain rounded-lg shadow-lg"
+                            : "w-full max-w-[96vw] sm:max-w-full max-h-full object-contain rounded-lg"
+                        }
                       />
                     </div>
                     <div className="min-h-[140px] flex flex-col justify-center">
-                      <h3 className="text-2xl font-bold mb-2 text-slate-800">
+                      <h3
+                        className={
+                          isDark
+                            ? "text-2xl font-bold mb-2 text-slate-800"
+                            : "text-2xl font-bold mb-2 text-slate-900"
+                        }
+                      >
                         {certificates[currentCertificate].title}
                       </h3>
-                      <p className="text-xl text-blue-600 font-medium mb-2">
+                      <p
+                        className={
+                          isDark
+                            ? "text-xl text-blue-600 font-medium mb-2"
+                            : "text-xl text-blue-700 font-medium mb-2"
+                        }
+                      >
                         {certificates[currentCertificate].organization}
                       </p>
-                      <p className="text-slate-600 mb-2">
+                      <p
+                        className={
+                          isDark ? "text-slate-600 mb-2" : "text-slate-500 mb-2"
+                        }
+                      >
                         {certificates[currentCertificate].date}
                       </p>
                       <div className="h-6 flex items-center justify-center">
                         {certificates[currentCertificate].certificateId && (
-                          <p className="text-sm text-slate-500 bg-slate-50 px-3 py-1 rounded-full">
+                          <p
+                            className={
+                              isDark
+                                ? "text-sm text-slate-500 bg-slate-50 px-3 py-1 rounded-full"
+                                : "text-sm text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-100"
+                            }
+                          >
                             ID: {certificates[currentCertificate].certificateId}
                           </p>
                         )}
@@ -777,13 +998,23 @@ const App = () => {
 
                 <button
                   onClick={nextCertificate}
-                  className="p-3 rounded-full bg-slate-100 hover:bg-slate-200 transition-all transform hover:scale-110 flex-shrink-0"
+                  className={
+                    isDark
+                      ? "p-3 rounded-full bg-slate-100 hover:bg-slate-200 transition-all transform hover:scale-110 flex-shrink-0"
+                      : "p-3 rounded-full bg-white/70 hover:bg-white transition-all transform hover:scale-110 flex-shrink-0 border border-slate-200"
+                  }
                 >
                   <ChevronRight size={24} className="text-slate-600" />
                 </button>
               </div>
 
-              <div className="flex justify-center pb-6">
+              <div
+                className={
+                  isDark
+                    ? "flex justify-center pb-6"
+                    : "flex justify-center pb-6 pt-2"
+                }
+              >
                 <div className="flex gap-2">
                   {certificates.map((_, index) => (
                     <button

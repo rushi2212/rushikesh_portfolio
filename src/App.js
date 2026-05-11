@@ -22,6 +22,8 @@ import {
   Instagram,
   Moon,
   Sun,
+  Menu,
+  X,
 } from "lucide-react";
 
 const App = () => {
@@ -71,6 +73,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [scrollY, setScrollY] = useState(0);
   const [theme, setTheme] = useState("dark");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isDark = theme === "dark";
 
@@ -512,7 +515,23 @@ const App = () => {
                 Rushikesh
               </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 md:gap-3">
+              <button
+                type="button"
+                onClick={() =>
+                  setTheme((currentTheme) =>
+                    currentTheme === "dark" ? "light" : "dark",
+                  )
+                }
+                className={
+                  isDark
+                    ? "inline-flex md:hidden h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-100 backdrop-blur-md transition-all hover:border-blue-400/40 hover:bg-white/10"
+                    : "inline-flex md:hidden h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-100 text-slate-800 shadow-sm transition-all hover:border-blue-400/40 hover:bg-slate-200"
+                }
+                aria-label="Toggle theme"
+              >
+                {isDark ? <Sun size={16} /> : <Moon size={16} />}
+              </button>
               <div className="hidden md:flex items-center space-x-8">
                 <a
                   href="#about"
@@ -587,6 +606,56 @@ const App = () => {
                   Contact
                 </a>
               </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen((open) => !open)}
+              className={
+                isDark
+                  ? "inline-flex md:hidden h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-100 backdrop-blur-md transition-all hover:border-blue-400/40 hover:bg-white/10"
+                  : "inline-flex md:hidden h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-slate-100 text-slate-800 shadow-sm transition-all hover:border-blue-400/40 hover:bg-slate-200"
+              }
+              aria-label="Toggle mobile menu"
+              aria-expanded={isMobileMenuOpen}
+            >
+              {isMobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          </div>
+          <div
+            className={`md:hidden overflow-hidden transition-all duration-300 ${
+              isMobileMenuOpen
+                ? "max-h-96 opacity-100 mt-4"
+                : "max-h-0 opacity-0"
+            }`}
+          >
+            <div
+              className={
+                isDark
+                  ? "space-y-2 rounded-2xl border border-white/10 bg-slate-950/90 p-4 backdrop-blur-md"
+                  : "space-y-2 rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-lg backdrop-blur-md"
+              }
+            >
+              {[
+                ["#about", "About"],
+                ["#skills", "Skills"],
+                ["#projects", "Projects"],
+                ["#achievements", "Achievements"],
+                ["#certifications", "Certifications"],
+                ["#contact", "Contact"],
+              ].map(([href, label]) => (
+                <a
+                  key={href}
+                  href={href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={
+                    isDark
+                      ? "block rounded-xl px-4 py-3 text-sm font-medium text-slate-200 transition-colors hover:bg-white/5 hover:text-cyan-300"
+                      : "block rounded-xl px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-blue-700"
+                  }
+                >
+                  {label}
+                </a>
+              ))}
             </div>
           </div>
         </div>
@@ -695,7 +764,7 @@ const App = () => {
             </div>
           </div>
           <div className="lg:w-1/2 flex justify-center">
-            <div className="relative flex w-full max-w-lg items-center justify-center py-10">
+            <div className="relative flex w-full max-w-lg items-center justify-center py-10 -translate-y-2 sm:-translate-y-4 lg:translate-y-0">
               <div
                 className={
                   isDark
@@ -928,37 +997,61 @@ const App = () => {
                   : "bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100"
               }
             >
-              <div className="flex items-center justify-between p-6 min-h-[500px]">
-                <button
-                  onClick={prevCertificate}
-                  className={
-                    isDark
-                      ? "p-3 rounded-full bg-slate-100 hover:bg-slate-200 transition-all transform hover:scale-110 flex-shrink-0"
-                      : "p-3 rounded-full bg-white/70 hover:bg-white transition-all transform hover:scale-110 flex-shrink-0 border border-slate-200"
-                  }
-                >
-                  <ChevronLeft size={24} className="text-slate-600" />
-                </button>
-
-                <div className="flex-1 mx-4 sm:mx-8 w-full">
+              <div className="flex flex-col gap-4 p-4 sm:p-6 md:min-h-[500px]">
+                <div className="flex-1 w-full">
                   <div className="text-center">
-                    <div className="h-72 sm:h-64 flex items-center justify-center mb-6 w-full">
+                    <div className="flex items-center justify-center mb-6 w-full min-h-[18rem] sm:min-h-[22rem] md:min-h-[16rem] lg:min-h-[18rem]">
                       <img
                         src={certificates[currentCertificate].image}
                         alt={certificates[currentCertificate].title}
                         className={
                           isDark
-                            ? "w-full max-w-[92vw] sm:max-w-full max-h-full object-contain rounded-lg shadow-lg"
-                            : "w-full max-w-[96vw] sm:max-w-full max-h-full object-contain rounded-lg"
+                            ? "w-full max-w-[100%] max-h-[70vh] object-contain rounded-lg shadow-lg"
+                            : "w-full max-w-[100%] max-h-[70vh] object-contain rounded-lg"
                         }
                       />
+                    </div>
+                    <div className="mb-5 flex items-center justify-center gap-3">
+                      <button
+                        onClick={prevCertificate}
+                        className={
+                          isDark
+                            ? "p-3 rounded-full bg-slate-100 hover:bg-slate-200 transition-all transform hover:scale-110 flex-shrink-0"
+                            : "p-3 rounded-full bg-white/70 hover:bg-white transition-all transform hover:scale-110 flex-shrink-0 border border-slate-200"
+                        }
+                      >
+                        <ChevronLeft size={24} className="text-slate-600" />
+                      </button>
+                      <div className="flex gap-2">
+                        {certificates.map((_, index) => (
+                          <button
+                            key={index}
+                            onClick={() => setCurrentCertificate(index)}
+                            className={`w-3 h-3 rounded-full transition-all ${
+                              index === currentCertificate
+                                ? "bg-blue-600"
+                                : "bg-slate-300"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <button
+                        onClick={nextCertificate}
+                        className={
+                          isDark
+                            ? "p-3 rounded-full bg-slate-100 hover:bg-slate-200 transition-all transform hover:scale-110 flex-shrink-0"
+                            : "p-3 rounded-full bg-white/70 hover:bg-white transition-all transform hover:scale-110 flex-shrink-0 border border-slate-200"
+                        }
+                      >
+                        <ChevronRight size={24} className="text-slate-600" />
+                      </button>
                     </div>
                     <div className="min-h-[140px] flex flex-col justify-center">
                       <h3
                         className={
                           isDark
-                            ? "text-2xl font-bold mb-2 text-slate-800"
-                            : "text-2xl font-bold mb-2 text-slate-900"
+                            ? "text-xl sm:text-2xl font-bold mb-2 text-slate-800"
+                            : "text-xl sm:text-2xl font-bold mb-2 text-slate-900"
                         }
                       >
                         {certificates[currentCertificate].title}
@@ -966,15 +1059,17 @@ const App = () => {
                       <p
                         className={
                           isDark
-                            ? "text-xl text-blue-600 font-medium mb-2"
-                            : "text-xl text-blue-700 font-medium mb-2"
+                            ? "text-base sm:text-xl text-blue-600 font-medium mb-2"
+                            : "text-base sm:text-xl text-blue-700 font-medium mb-2"
                         }
                       >
                         {certificates[currentCertificate].organization}
                       </p>
                       <p
                         className={
-                          isDark ? "text-slate-600 mb-2" : "text-slate-500 mb-2"
+                          isDark
+                            ? "text-sm sm:text-base text-slate-600 mb-2"
+                            : "text-sm sm:text-base text-slate-500 mb-2"
                         }
                       >
                         {certificates[currentCertificate].date}
@@ -984,8 +1079,8 @@ const App = () => {
                           <p
                             className={
                               isDark
-                                ? "text-sm text-slate-500 bg-slate-50 px-3 py-1 rounded-full"
-                                : "text-sm text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-100"
+                                ? "text-xs sm:text-sm text-slate-500 bg-slate-50 px-3 py-1 rounded-full"
+                                : "text-xs sm:text-sm text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-100"
                             }
                           >
                             ID: {certificates[currentCertificate].certificateId}
@@ -995,17 +1090,6 @@ const App = () => {
                     </div>
                   </div>
                 </div>
-
-                <button
-                  onClick={nextCertificate}
-                  className={
-                    isDark
-                      ? "p-3 rounded-full bg-slate-100 hover:bg-slate-200 transition-all transform hover:scale-110 flex-shrink-0"
-                      : "p-3 rounded-full bg-white/70 hover:bg-white transition-all transform hover:scale-110 flex-shrink-0 border border-slate-200"
-                  }
-                >
-                  <ChevronRight size={24} className="text-slate-600" />
-                </button>
               </div>
 
               <div
@@ -1014,21 +1098,7 @@ const App = () => {
                     ? "flex justify-center pb-6"
                     : "flex justify-center pb-6 pt-2"
                 }
-              >
-                <div className="flex gap-2">
-                  {certificates.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentCertificate(index)}
-                      className={`w-3 h-3 rounded-full transition-all ${
-                        index === currentCertificate
-                          ? "bg-blue-600"
-                          : "bg-slate-300"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
+              ></div>
             </div>
           </div>
         </div>

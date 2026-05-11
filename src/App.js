@@ -80,21 +80,36 @@ const App = () => {
   const certificates = [
     {
       id: 1,
-      title: "Agentic AI Workshop",
-      organization: "Progression School",
-      date: "July 2025",
-      certificateId: "GCO-2303-251",
-      image: "/Ai-workshop.jpg",
+      title: "PVGHackHub 2025 Winner",
+      organization:
+        "Pune Vidyarthi Griha's College of Engineering & S.S. Dhamankar Institute of Management, Nashik",
+      date: "Oct 2025",
+      image: "/pvg-hackhub.png",
     },
     {
       id: 2,
+      title: "HACKRON 2.0 - 2nd Position",
+      organization:
+        "Newton School of Technology & Ajeenkya DY Patil University",
+      date: "Jan 2026",
+      image: "/hackron-certificate.png",
+    },
+    {
+      id: 3,
       title: "Hack Your Path 6.0",
       organization: "Hyderabad Institute Of Technology & Management",
       date: "May 2025",
       image: "/hack-your-path.jpg",
     },
     {
-      id: 3,
+      id: 4,
+      title: "Hacksagon",
+      organization: "ABV.IIITM IEEE Student Branch",
+      date: "June 2025",
+      image: "/hacksagon.png",
+    },
+    {
+      id: 5,
       title: "MERN Stack Course",
       organization: "Tutedude",
       date: "May 2025",
@@ -102,33 +117,132 @@ const App = () => {
       certificateId: "TD-RUSH-ME-2152",
     },
     {
-      id: 4,
+      id: 6,
+      title: "Agentic AI Workshop",
+      organization: "Progression School",
+      date: "July 2025",
+      certificateId: "GCO-2303-251",
+      image: "/Ai-workshop.jpg",
+    },
+
+    {
+      id: 7,
       title: "React.js Course",
       organization: "Tutedude",
       date: "May 2025",
       image: "/certificateReact.jpg",
       certificateId: "TD-RUSH-RJ-1252",
     },
-    {
-      id: 5,
-      title: "Hacksagon",
-      organization: "ABV.IIITM IEEE Student Branch",
-      date: "June 2025",
-      image: "/hacksagon.png",
-    },
-    {
-      id: 6,
-      title: "CodTech IT Solutions Internship",
-      organization: "CODTECH IT SOLUTIONS PVT LTD",
-      date: "Feb 2025",
-      image: "/codtech.jpg",
-      certificateId: "CT08KRO",
-    },
   ];
-
   const projects = [
     {
       id: 1,
+      title: "MindSpace",
+      subtitle: "Unified AI Workspace for Creators",
+      date: "Nov 2025",
+      description:
+        "AI-powered creative workspace integrating text generation, image synthesis, audio generation, and brainstorming tools in one platform.",
+      features: [
+        "AI text generation",
+        "Image & audio synthesis",
+        "MindMap builder",
+        "Real-time AI assistance",
+      ],
+      tech: [
+        "React",
+        "FastAPI",
+        "Google Gemini",
+        "Hugging Face",
+        "AI Image Generation",
+        "AI Audio Generation",
+      ],
+      link: "https://mind-space-one-mu.vercel.app/",
+      image: "/mindspace.png",
+    },
+    {
+      id: 2,
+      title: "DisasterConnect",
+      subtitle: "AI-Powered Emergency Response Platform",
+      date: "2025",
+      description:
+        "AI-driven disaster management platform for real-time emergency coordination, damage assessment, and incident tracking.",
+      features: [
+        "AI disaster detection",
+        "Real-time operations map",
+        "NLP incident verification",
+        "WebSocket live tracking",
+      ],
+      tech: [
+        "React",
+        "Node.js",
+        "MongoDB",
+        "FastAPI",
+        "TensorFlow",
+        "PyTorch",
+        "Socket.io",
+      ],
+      link: "https://disastermanager.onrender.com/",
+      image: "/disasterconnect.png",
+    },
+    {
+      id: 3,
+      title: "Crop Calendar",
+      subtitle: "AI-Powered Agritech Platform",
+      date: "Jan 2026",
+      description:
+        "Full-stack agritech platform helping farmers optimize crop cycles using AI-driven insights and real-time agricultural data.",
+      features: [
+        "Dynamic crop scheduling",
+        "Weather integration",
+        "AI crop recommendations",
+        "Real-time agricultural insights",
+      ],
+      tech: [
+        "MongoDB",
+        "Express.js",
+        "React.js",
+        "Node.js",
+        "AI-driven Insights",
+      ],
+      link: "https://team-fab-5-agritech.vercel.app/dashboard",
+      image: "/crop-calendar.png",
+    },
+    {
+      id: 4,
+      title: "CureHub",
+      subtitle: "Hospital Management System",
+      date: "May 2025",
+      description:
+        "Comprehensive hospital management system for streamlined patient data management.",
+      features: [
+        "Patient data management",
+        "User authentication",
+        "Real-time updates",
+        "Medical records",
+      ],
+      tech: ["MongoDB", "Express.js", "React.js", "Node.js", "JWT"],
+      link: "https://curehub-bfrb.onrender.com",
+      image: "/curehub.png",
+    },
+    {
+      id: 5,
+      title: "AI DSA Mentor",
+      subtitle: "AI-Powered DSA Learning Platform",
+      date: "2025",
+      description:
+        "Interactive AI-powered DSA learning platform that generates topic notes, quizzes, resources, and personalized coding assistance.",
+      features: [
+        "AI-generated DSA notes",
+        "Resource recommendations",
+        "AI doubt solver",
+        "Quiz generation & progress tracking",
+      ],
+      tech: ["React", "FastAPI", "Google Gemini", "Groq"],
+      link: "https://ai-dsa-mentor-seven.vercel.app/",
+      image: "/ai-dsa-mentor.png",
+    },
+    {
+      id: 6,
       title: "PostCraft Pro",
       subtitle: "AI-Powered Social Media Post Generator",
       date: "July 2025",
@@ -143,9 +257,10 @@ const App = () => {
       tech: ["Flask", "HTML", "CSS", "Google Gemini", "Tavily API"],
       link: "https://post-agent.onrender.com",
       image: "/postcraft.png",
+      github: "#",
     },
     {
-      id: 2,
+      id: 7,
       title: "GreenPulse",
       subtitle: "Sustainable E-commerce Platform",
       date: "June 2025",
@@ -160,61 +275,62 @@ const App = () => {
       tech: ["MongoDB", "Express.js", "React.js", "Node.js", "Razorpay"],
       link: "https://greenpulse-45fd.onrender.com",
       image: "/greenpulse.png",
-    },
-    {
-      id: 3,
-      title: "CureHub",
-      subtitle: "Hospital Management System",
-      date: "May 2025",
-      description:
-        "Comprehensive hospital management system for streamlined patient data management. Won ₹5000 prize in hackathon.",
-      features: [
-        "Patient data management",
-        "User authentication",
-        "Real-time updates",
-        "Medical records",
-      ],
-      tech: ["MongoDB", "Express.js", "React.js", "Node.js", "JWT"],
-      link: "https://curehub-bfrb.onrender.com",
-      image: "/curehub.png",
+      github: "#",
     },
   ];
 
   const skills = [
     {
       category: "Frontend Development",
-      items: ["React.js", "JavaScript", "HTML5", "CSS3", "Responsive Design"],
+      items: ["React.js", "JavaScript", "HTML5", "CSS3", "Tailwind CSS"],
       icon: <Code size={24} />,
+      color: "from-blue-500 to-cyan-500",
     },
     {
       category: "Backend Development",
       items: ["Node.js", "Express.js", "Python", "Flask", "RESTful APIs"],
-      icon: <Users size={24} />,
+      
+      color: "from-green-500 to-emerald-500",
     },
     {
       category: "Database & Cloud",
       items: ["MongoDB", "MySQL", "Firebase", "AWS", "Git"],
       icon: <Zap size={24} />,
+      color: "from-purple-500 to-pink-500",
     },
     {
       category: "AI & ML Technologies",
-      items: [
-        "Google Gemini",
-        "Tavily Web Search API",
-        "ChatGPT",
-        "OpenAI API",
-      ],
-      icon: <Award size={24} />,
+      items: ["Google Gemini", "Tavily API", "ChatGPT", "OpenAI API"],
+      
+      color: "from-orange-500 to-red-500",
     },
   ];
 
   const achievements = [
     {
+      title: "Winner",
+      event: "PVG HackHub 2025 - National Level 24-Hour Hackathon",
+      domain: "Web Development",
+      organizer:
+        "Pune Vidyarthi Griha’s College of Engineering & S.S. Dhamankar Institute of Management, Nashik",
+      date: "Oct 2025",
+      description:
+        "Won the Offline Round in Web Development domain by building and presenting an innovative project under intense 24-hour hackathon conditions.",
+    },
+    {
+      title: "2nd Place Winner",
+      event: "HACKRON 2.0 - 24 Hour Hackathon",
+      organizer: "Newton School of Technology & Ajeenkya DY Patil University",
+      date: "Jan 2026",
+      description:
+        "Built Crop Calendar & Farming Assistant — an AI-powered AgriTech solution for crop planning, pest prediction, market price forecasting, and contextual farming assistance.",
+    },
+
+    {
       title: "Special Prize Winner",
       event: "Hack Your Path 6.0 Hackathon",
       theme: "FinTech Theme",
       date: "May 2025",
-      amount: "₹5000",
       description: "Developed CureHub - Hospital Management System",
     },
     {
@@ -238,7 +354,7 @@ const App = () => {
 
   const prevCertificate = () => {
     setCurrentCertificate(
-      (prev) => (prev - 1 + certificates.length) % certificates.length
+      (prev) => (prev - 1 + certificates.length) % certificates.length,
     );
   };
 

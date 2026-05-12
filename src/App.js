@@ -861,9 +861,6 @@ const App = () => {
                     alt={project.title}
                     className="w-full h-48 object-cover transform hover:scale-105 transition-transform duration-300"
                   />
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm text-slate-700 px-3 py-1 rounded-full text-sm font-medium">
-                    {project.date}
-                  </div>
                 </div>
                 <div className="p-6 flex-1 flex flex-col">
                   <div className="flex-1">
@@ -1000,14 +997,14 @@ const App = () => {
               <div className="flex flex-col gap-4 p-4 sm:p-6 md:min-h-[500px]">
                 <div className="flex-1 w-full">
                   <div className="text-center">
-                    <div className="flex items-center justify-center mb-6 w-full min-h-[18rem] sm:min-h-[22rem] md:min-h-[16rem] lg:min-h-[18rem]">
+                    <div className="flex items-center justify-center mb-6 w-full h-72 sm:h-64 md:h-72 lg:h-64">
                       <img
                         src={certificates[currentCertificate].image}
                         alt={certificates[currentCertificate].title}
                         className={
                           isDark
-                            ? "w-full max-w-[100%] max-h-[70vh] object-contain rounded-lg shadow-lg"
-                            : "w-full max-w-[100%] max-h-[70vh] object-contain rounded-lg"
+                            ? "w-full max-w-[92vw] sm:max-w-full max-h-full object-contain rounded-lg shadow-lg"
+                            : "w-full max-w-[92vw] sm:max-w-full max-h-full object-contain rounded-lg"
                         }
                       />
                     </div>

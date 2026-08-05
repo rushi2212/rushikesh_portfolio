@@ -329,27 +329,57 @@ const App = () => {
   const skills = [
     {
       category: "Frontend Development",
-      items: ["React.js", "JavaScript", "HTML5", "CSS3", "Tailwind CSS"],
+      items: [
+        "React.js",
+        "Next.js",
+        "JavaScript",
+        "TypeScript",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS",
+      ],
       icon: <Code size={24} />,
       color: "from-blue-500 to-cyan-500",
     },
     {
       category: "Backend Development",
-      items: ["Node.js", "Express.js", "Python", "FastAPI", "RESTful APIs"],
+      items: [
+        "Node.js",
+        "Express.js",
+        "Java",
+        "Python",
+        "FastAPI",
+        "RESTful APIs",
+        "Postman",
+      ],
       icon: <Server size={24} />,
       color: "from-green-500 to-emerald-500",
     },
     {
       category: "Database",
-      items: ["MongoDB", "MySQL", "Git","GitHub"],
+      items: ["MongoDB", "PostgreSQL", "MySQL", "Git", "GitHub"],
       icon: <Zap size={24} />,
       color: "from-purple-500 to-pink-500",
     },
     {
       category: "AI Technologies",
-      items: ["LangChain", "LangGraph", "Agentic AI","RAG"],
+      items: [
+        "LangChain",
+        "LangGraph",
+        "Agentic AI",
+        "RAG",
+        "Machine Learning",
+        "MCP",
+        "n8n",
+      ],
       icon: <Bot size={24} />,
       color: "from-orange-500 to-red-500",
+    },
+    {
+      category: "DevOps & Containerization",
+      items: ["Docker"],
+      icon: <Server size={24} />,
+      color: "from-slate-500 to-slate-700",
     },
   ];
 

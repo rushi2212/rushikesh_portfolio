@@ -180,6 +180,21 @@ const App = () => {
       image: "/certificateReact.jpg",
       certificateId: "TD-RUSH-RJ-1252",
     },
+    {
+      id: 8,
+      title: "N8N Course",
+      organization: "Tutedude",
+      date: "Aug 2026",
+      image: "/tutedude-n8n.png",
+      certificateId: "TD-RUSH-CR-1621",
+    },
+    {
+      id: 9,
+      title: "Vector Databases for RAG: An Introduction",
+      organization: "IBM",
+      date: "Jul 2026",
+      image: "/ibm.png",
+    },
   ];
   const projects = [
     {

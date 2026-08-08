@@ -408,6 +408,7 @@ const App = () => {
       date: "Oct 2025",
       description:
         "Won the Offline Round in Web Development domain by building and presenting an innovative project under intense 24-hour hackathon conditions.",
+      image: "/pvg.jpeg",
     },
     {
       title: "2nd Place Winner",
@@ -416,6 +417,7 @@ const App = () => {
       date: "Jan 2026",
       description:
         "Built Crop Calendar & Farming Assistant — an AI-powered AgriTech solution for crop planning, pest prediction, market price forecasting, and contextual farming assistance.",
+      image: "/teckron.jpeg",
     },
 
     {
@@ -424,6 +426,7 @@ const App = () => {
       theme: "FinTech Theme",
       date: "May 2025",
       description: "Developed CureHub - Hospital Management System",
+      image: "/hitam.jpeg",
     },
     {
       title: "Finalist",
@@ -431,6 +434,7 @@ const App = () => {
       note: "Selected among 600+ participating teams",
       date: "June 2025",
       description: "Showcased innovative AI-powered solutions",
+      image: "/hacksagon.jpeg",
     },
     {
       title: "Participant",
@@ -738,7 +742,7 @@ const App = () => {
                     : "text-xl text-slate-600 leading-relaxed"
                 }
               >
-                Computer Engineering Student & Full-Stack Developer passionate
+                Computer Engineering Graduate & Full-Stack Developer passionate
                 about creating innovative solutions with AI and modern web
                 technologies.
               </p>
@@ -749,8 +753,8 @@ const App = () => {
                     : "text-lg text-slate-500 leading-relaxed"
                 }
               >
-                Currently pursuing Computer Engineering at GCOEARA, Pune, with
-                expertise in MERN stack, AI integration, and modern web
+                Graduated in Computer Engineering from GCOEARA, Pune with a 9.32
+                CGPA, experienced in MERN stack, AI integration, and modern web
                 development.
               </p>
               <div
@@ -845,37 +849,62 @@ const App = () => {
         </div>
       </section>
 
-      {/* Skills Section */}
-      <section id="skills" className="bg-white py-20">
+      {/* Achievements Section (swapped) */}
+      <section id="achievements" className="bg-white py-20">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-slate-800 mb-4">
-              Technical Expertise
+              Achievements & Recognition
             </h2>
             <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-              Proficient in modern technologies and frameworks for full-stack
-              development
+              Awards and recognitions received for innovative projects and
+              technical excellence
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {skills.map((skill, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {achievements.map((achievement, index) => (
               <div
                 key={index}
-                className="bg-slate-50 rounded-2xl p-6 hover:shadow-xl transition-all transform hover:-translate-y-1 border border-slate-100"
+                className="bg-slate-50 rounded-2xl overflow-hidden hover:shadow-xl transition-all transform hover:-translate-y-1 border border-slate-100"
               >
-                <div className="text-blue-600 mb-4">{skill.icon}</div>
-                <h3 className="text-xl font-semibold mb-4 text-slate-800">
-                  {skill.category}
-                </h3>
-                <div className="space-y-2">
-                  {skill.items.map((item, i) => (
-                    <div
-                      key={i}
-                      className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-medium"
-                    >
-                      {item}
+                {achievement.image && (
+                  <div className="w-full h-44 sm:h-56 lg:h-48 bg-slate-100">
+                    <img
+                      src={achievement.image}
+                      alt={achievement.event}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+                <div className="p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="p-3 bg-blue-100 rounded-full">
+                      <Award size={20} className="text-blue-600" />
                     </div>
-                  ))}
+                    <h3 className="text-xl font-bold text-slate-800">
+                      {achievement.title}
+                    </h3>
+                  </div>
+                  {achievement.amount && (
+                    <div className="text-green-600 font-semibold mb-2">
+                      {achievement.amount}
+                    </div>
+                  )}
+                  <p className="text-slate-600 mb-2 font-medium">
+                    {achievement.event}
+                  </p>
+                  {achievement.note && (
+                    <p className="text-slate-500 text-sm mb-2">
+                      {achievement.note}
+                    </p>
+                  )}
+                  <p className="text-slate-500 text-sm mb-4">
+                    {achievement.description}
+                  </p>
+                  <div className="flex items-center gap-2 text-slate-400 text-sm">
+                    <Calendar size={14} />
+                    {achievement.date}
+                  </div>
                 </div>
               </div>
             ))}
@@ -966,53 +995,37 @@ const App = () => {
         </div>
       </section>
 
-      {/* Achievements Section */}
-      <section id="achievements" className="bg-white py-20">
+      {/* Skills Section (swapped) */}
+      <section id="skills" className="bg-white py-20">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-slate-800 mb-4">
-              Achievements & Recognition
+              Technical Expertise
             </h2>
             <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-              Awards and recognitions received for innovative projects and
-              technical excellence
+              Proficient in modern technologies and frameworks for full-stack
+              development
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {achievements.map((achievement, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {skills.map((skill, index) => (
               <div
                 key={index}
                 className="bg-slate-50 rounded-2xl p-6 hover:shadow-xl transition-all transform hover:-translate-y-1 border border-slate-100"
               >
-                <div className="flex items-start gap-4">
-                  <div className="p-3 bg-blue-100 rounded-full">
-                    <Award size={24} className="text-blue-600" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold mb-2 text-slate-800">
-                      {achievement.title}
-                    </h3>
-                    {achievement.amount && (
-                      <div className="text-green-600 font-semibold mb-2">
-                        {achievement.amount}
-                      </div>
-                    )}
-                    <p className="text-slate-600 mb-2 font-medium">
-                      {achievement.event}
-                    </p>
-                    {achievement.note && (
-                      <p className="text-slate-500 text-sm mb-2">
-                        {achievement.note}
-                      </p>
-                    )}
-                    <p className="text-slate-500 text-sm mb-3">
-                      {achievement.description}
-                    </p>
-                    <div className="flex items-center gap-2 text-slate-400 text-sm">
-                      <Calendar size={14} />
-                      {achievement.date}
+                <div className="text-blue-600 mb-4">{skill.icon}</div>
+                <h3 className="text-xl font-semibold mb-4 text-slate-800">
+                  {skill.category}
+                </h3>
+                <div className="space-y-2">
+                  {skill.items.map((item, i) => (
+                    <div
+                      key={i}
+                      className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-medium"
+                    >
+                      {item}
                     </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             ))}
@@ -1229,7 +1242,7 @@ const App = () => {
                   (GCOEARA)
                 </p>
                 <p className="text-slate-600 mb-6">
-                  Pune, India • Expected Graduation: 2026
+                  Pune, India • Graduated: 2026 • CGPA: 9.32
                 </p>
                 <div className="flex flex-wrap justify-center gap-3">
                   {[

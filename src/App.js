@@ -195,6 +195,14 @@ const App = () => {
       date: "Jul 2026",
       image: "/ibm.png",
     },
+    {
+      id: 10,
+      title: "DevOps Course",
+      organization: "Tutedude",
+      date: "Sep 2026",
+      image: "/tutedude_devops.png",
+      certificateId: "TD-RUSH-DO-1605",
+    },
   ];
   const projects = [
     {

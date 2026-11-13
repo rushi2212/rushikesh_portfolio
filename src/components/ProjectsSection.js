@@ -45,7 +45,7 @@ export default function ProjectsSection({ projects }) {
                       {project.features.slice(0, 3).map((feature, featureIndex) => (
                         <div
                           key={featureIndex}
-                          className="flex items-center gap-2 text-xs text-slate-600"
+                          className="project-feature-row flex items-center gap-2 text-xs text-slate-600"
                         >
                           <div className="w-1 h-1 bg-blue-600 rounded-full"></div>
                           {feature}

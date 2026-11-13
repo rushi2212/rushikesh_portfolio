@@ -781,7 +781,15 @@ html.dark body { background:#050505; color:#f4f7fb; }
   #projects .portfolio-project-grid .project-card-7 .project-image,
   #projects .portfolio-project-grid .project-card-8 .project-image { height:13rem !important; min-height:13rem !important; }
 }
-#projects .project-card { border:0 !important; outline:0 !important; }
-#projects .project-card::before { display:none !important; }
-#projects .project-features { border:0 !important; outline:0 !important; box-shadow:none !important; background:transparent !important; }
+#projects .project-card { border:1px solid rgba(148,163,184,.15) !important; }
+#projects .project-card::before { display:block !important; }
+#projects .project-features,
+#projects .project-feature-row {
+  border:0 !important;
+  outline:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  background:transparent !important;
+}
+#projects .project-feature-row { padding:0 !important; }
 

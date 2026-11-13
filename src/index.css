@@ -231,6 +231,33 @@ html:not(.dark) body {
   background: radial-gradient(circle, rgba(34,211,238,.075), rgba(99,102,241,.035) 38%, transparent 70%);
   filter: blur(16px); animation: ambient-drift 20s ease-in-out infinite alternate;
 }
+/* Quiet code-editor details float behind the content */
+#root > div > .code-atmosphere { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+#root > div > section, #root > div > footer { position: relative; z-index: 1; }
+.code-symbol { position: absolute; color: #67e8f9; opacity: .12; font: 600 clamp(1.5rem,3vw,3rem)/1.1 "JetBrains Mono",monospace; text-shadow: 0 0 28px rgba(34,211,238,.25); animation: code-drift 10s ease-in-out infinite alternate; }
+html:not(.dark) .code-symbol { color: #2563eb; opacity: .11; text-shadow: 0 0 22px rgba(59,130,246,.16); }
+.code-symbol-one { top: 19%; right: 8%; animation-delay: -2s; }
+.code-symbol-two { top: 55%; left: 5%; color: #a78bfa; animation-delay: -5s; }
+.code-symbol-three { right: 13%; bottom: 17%; font-size: .9rem; color: #86efac; letter-spacing: .12em; animation-delay: -7s; }
+.code-symbol-four { top: 72%; left: 19%; color: #a78bfa; animation-delay: -3s; }
+.code-terminal { position: absolute; top: 34%; right: -1.5rem; width: 16rem; border: 1px solid rgba(125,211,252,.14); border-radius: .9rem; overflow: hidden; background: rgba(8,15,28,.22); box-shadow: 0 18px 60px rgba(2,8,23,.08); transform: rotate(5deg); opacity: .36; animation: terminal-float 14s ease-in-out infinite alternate; }
+html:not(.dark) .code-terminal { background: rgba(255,255,255,.36); border-color: rgba(59,130,246,.15); box-shadow: 0 18px 55px rgba(30,64,175,.06); opacity: .3; }
+.code-terminal-bar { height: 2rem; display: flex; align-items: center; gap: .35rem; padding: 0 .65rem; border-bottom: 1px solid rgba(148,163,184,.13); color: #94a3b8; font: 500 .55rem/1 "JetBrains Mono",monospace; }
+.code-terminal-bar i { width: .38rem; height: .38rem; border-radius: 50%; background: #fb7185; opacity: .8; }
+.code-terminal-bar i:nth-child(2) { background: #fbbf24; }
+.code-terminal-bar i:nth-child(3) { background: #4ade80; margin-right: .2rem; }
+.code-terminal pre { margin: 0; padding: .9rem 1rem 1rem; color: #cbd5e1; font: 500 .68rem/1.9 "JetBrains Mono",monospace; }
+html:not(.dark) .code-terminal pre { color: #334155; }
+.code-terminal pre b { color: #67e8f9; font-weight: 600; }
+.code-terminal pre em { color: #86efac; font-style: normal; }
+html:not(.dark) .code-terminal pre b { color: #0284c7; }
+html:not(.dark) .code-terminal pre em { color: #059669; }
+.code-trace { position: absolute; width: 11rem; height: 1px; opacity: .15; background: linear-gradient(90deg,transparent,#22d3ee,transparent); transform: rotate(-28deg); animation: trace-pulse 5s ease-in-out infinite alternate; }
+.code-trace-one { top: 28%; left: 9%; }
+.code-trace-two { right: 19%; bottom: 31%; width: 7rem; animation-delay: -2.5s; }
+@keyframes code-drift { from { transform: translate3d(0,0,0) rotate(-3deg); } to { transform: translate3d(8px,-15px,0) rotate(3deg); } }
+@keyframes terminal-float { from { transform: translate3d(0,0,0) rotate(5deg); } to { transform: translate3d(-12px,-16px,0) rotate(2deg); } }
+@keyframes trace-pulse { from { opacity: .07; } to { opacity: .22; } }
 @keyframes ambient-drift {
   from { transform: translate3d(-14vw, 0, 0) scale(.9); }
   to { transform: translate3d(12vw, 14vh, 0) scale(1.14); }
@@ -357,6 +384,10 @@ html.dark .skill-count { color: #94a3b8; }
 #about p { max-width: 39rem; }
 #about img { max-height: 34rem; object-position: center 24%; }
 @media (max-width: 640px) {
+  .code-terminal { top: 37%; right: -9rem; transform: scale(.8) rotate(5deg); opacity: .22; }
+  .code-symbol-one { top: 14%; right: 4%; }
+  .code-symbol-two { left: 2%; }
+  .code-symbol-three { right: 4%; bottom: 8%; }
   #about { min-height: auto; padding-top: 7.5rem; }
   #about > div > .lg\:w-1\/2.flex.justify-center > div { margin-top: -.5rem; }
   #about > div { gap: 2rem; }

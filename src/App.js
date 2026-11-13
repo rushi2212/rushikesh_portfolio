@@ -608,6 +608,18 @@ const App = () => {
       }`}
       style={{ colorScheme: theme }}
     >
+      <div className="code-atmosphere" aria-hidden="true">
+        <span className="code-symbol code-symbol-one">&lt;/&gt;</span>
+        <span className="code-symbol code-symbol-two">&#123; &#125;</span>
+        <span className="code-symbol code-symbol-three">01&nbsp; /&nbsp; 0</span>
+        <span className="code-symbol code-symbol-four">();</span>
+        <div className="code-terminal">
+          <div className="code-terminal-bar"><i></i><i></i><i></i><span>developer@portfolio:~</span></div>
+          <pre><b>const</b> ideas = <em>"build"</em>;<br /><b>while</b> (curious) &#123;<br />&nbsp;&nbsp;create();<br />&#125;</pre>
+        </div>
+        <div className="code-trace code-trace-one"></div>
+        <div className="code-trace code-trace-two"></div>
+      </div>
       <div
         className={
           isDark

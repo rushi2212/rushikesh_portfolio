@@ -477,7 +477,15 @@ html:not(.dark) .code-atmosphere::after { opacity:.18; }
 #about a[class*="bg-blue-600"] { background:linear-gradient(110deg,#087e9a,#0c9bb2) !important; box-shadow:0 10px 32px rgba(0,217,245,.15); }
 #about a[class*="border-2"] { border-color:rgba(0,217,245,.48); color:#83eafa !important; background:rgba(6,15,27,.24); }
 #about a[class*="border-2"]:hover { background:rgba(0,217,245,.12); color:#e0fcff !important; }
-#about img { border:0; box-shadow:0 28px 90px rgba(0,0,0,.24); }
+#about img,
+#about img:hover,
+#about img:focus {
+  border:0 !important;
+  outline:0 !important;
+  box-shadow:none !important;
+  filter:none;
+}
+#about .relative.z-10 { border:0 !important; outline:0 !important; box-shadow:none !important; }
 
 /* Floating capsule navigation */
 nav.fixed.top-0 {

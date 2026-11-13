@@ -56,7 +56,14 @@ const App = () => {
             !response.ok ||
             !response.headers.get("content-type")?.includes("audio")
           ) {
-            throw new Error("ElevenLabs audio is not available");
+            return response
+              .json()
+              .catch(() => ({}))
+              .then((errorBody) => {
+                throw new Error(
+                  errorBody.error || "ElevenLabs audio is not available.",
+                );
+              });
           }
           return response.blob();
         })
@@ -129,11 +136,11 @@ const App = () => {
       .then((audioUrl) => {
         if (voiceRequestRef.current === requestId) playAudio(audioUrl);
       })
-      .catch(() => {
+      .catch((error) => {
         if (voiceRequestRef.current !== requestId) return;
         setIsSpeaking(false);
         setIsVoicePending(true);
-        setVoiceError("ElevenLabs is unavailable. Check the API key and server setup.");
+        setVoiceError(error.message || "ElevenLabs is unavailable. Check the API key and server setup.");
       });
   };
 

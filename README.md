@@ -29,6 +29,18 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+## Robot introduction voice
+
+The robot requests its introduction audio from the serverless endpoint at
+`/api/intro-voice`. This endpoint is designed to run on Vercel and keeps the
+ElevenLabs API key on the server instead of exposing it in the browser.
+
+Add `ELEVENLABS_API_KEY` to the Vercel project's environment variables. You may
+also set `ELEVENLABS_VOICE_ID` to use a different voice; otherwise the endpoint
+uses its configured default voice. For local testing, put these variables in an
+untracked `.env.local` file and run `npx vercel dev`. The robot falls back to
+the browser's built-in speech when the API endpoint is unavailable.
+
 ### `npm run eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can't go back!**

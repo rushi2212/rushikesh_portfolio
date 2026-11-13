@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ProjectsSection from "./components/ProjectsSection";
 import SkillsSection from "./components/SkillsSection";
+import introductionText from "./content/introduction.json";
 import {
   ChevronLeft,
   ChevronRight,
@@ -35,28 +36,68 @@ const App = () => {
   const [submitStatus, setSubmitStatus] = useState("");
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [cursor, setCursor] = useState({ x: 0, y: 0, visible: false });
+  const audioRef = useRef(null);
+  const introAudioUrlRef = useRef(null);
+  const voiceRequestRef = useRef(0);
 
-  const handleRobotClick = () => {
-    if (!("speechSynthesis" in window) || typeof SpeechSynthesisUtterance === "undefined") {
+  const speakWithBrowserVoice = (requestId) => {
+    if (voiceRequestRef.current !== requestId) return;
+    if (typeof SpeechSynthesisUtterance === "undefined" || !("speechSynthesis" in window)) {
+      setIsSpeaking(false);
       return;
     }
+    const utterance = new SpeechSynthesisUtterance(introductionText);
+    utterance.rate = 0.96;
+    utterance.pitch = 1.02;
+    utterance.onend = () => {
+      if (voiceRequestRef.current === requestId) setIsSpeaking(false);
+    };
+    utterance.onerror = () => {
+      if (voiceRequestRef.current === requestId) setIsSpeaking(false);
+    };
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  };
 
-    if (isSpeaking || window.speechSynthesis.speaking) {
-      window.speechSynthesis.cancel();
+  const handleRobotClick = async () => {
+    if (isSpeaking) {
+      voiceRequestRef.current += 1;
+      audioRef.current?.pause();
+      audioRef.current = null;
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
       setIsSpeaking(false);
       return;
     }
 
-    const introduction = new SpeechSynthesisUtterance(
-      "Hi, I'm Rushikesh Raut. Computer Engineering Graduate and Full-Stack Developer passionate about creating innovative solutions with AI and modern web technologies. Graduated in Computer Engineering from GCOEARA, Pune with a 9.32 CGPA, experienced in MERN stack, AI integration, and modern web development. Building clean, scalable interfaces and AI-powered apps.",
-    );
-    introduction.rate = 0.96;
-    introduction.pitch = 1.02;
-    introduction.onend = () => setIsSpeaking(false);
-    introduction.onerror = () => setIsSpeaking(false);
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(introduction);
+    const requestId = voiceRequestRef.current + 1;
+    voiceRequestRef.current = requestId;
     setIsSpeaking(true);
+
+    try {
+      let audioUrl = introAudioUrlRef.current;
+      if (!audioUrl) {
+        const response = await fetch("/api/intro-voice");
+        if (!response.ok || !response.headers.get("content-type")?.includes("audio")) {
+          throw new Error("ElevenLabs audio is not available");
+        }
+        const audioBlob = await response.blob();
+        if (voiceRequestRef.current !== requestId) return;
+        audioUrl = URL.createObjectURL(audioBlob);
+        introAudioUrlRef.current = audioUrl;
+      }
+
+      if (voiceRequestRef.current !== requestId) return;
+      const audio = new Audio(audioUrl);
+      audioRef.current = audio;
+      audio.onended = () => {
+        if (voiceRequestRef.current === requestId) setIsSpeaking(false);
+        audioRef.current = null;
+      };
+      audio.onerror = () => speakWithBrowserVoice(requestId);
+      await audio.play();
+    } catch {
+      if (voiceRequestRef.current === requestId) speakWithBrowserVoice(requestId);
+    }
   };
 
   const handleChange = (e) => {
@@ -109,6 +150,8 @@ const App = () => {
   useEffect(
     () => () => {
       if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      audioRef.current?.pause();
+      if (introAudioUrlRef.current) URL.revokeObjectURL(introAudioUrlRef.current);
     },
     [],
   );
@@ -123,7 +166,7 @@ const App = () => {
     if (isLoading) return undefined;
 
     const targets = document.querySelectorAll(
-      "section[id], section[id] .grid > div, section[id] .grid > a",
+      "section[id], section[id] .grid > div, section[id] .grid > a, section[id] .grid > article, #projects .project-feature-row",
     );
     if (!("IntersectionObserver" in window)) return undefined;
 

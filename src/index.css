@@ -944,14 +944,27 @@ html.dark body { background:#050505; color:#f4f7fb; }
 /* Key features read as a clean checklist, without individual boxes */
 #projects .project-features { margin-top:.15rem; }
 #projects .project-features h4 { color:#9baec3; font-size:.66rem; letter-spacing:.13em; }
-#projects .project-features .grid { gap:.45rem; }
+#projects .project-features .grid { display:flex; flex-direction:column; grid-template-columns:1fr; gap:.28rem; }
 #projects .project-feature-row {
   display:flex !important; align-items:flex-start !important; gap:.55rem !important;
-  color:#cbd5e1 !important; font-size:.76rem !important; line-height:1.45 !important;
+  color:#cbd5e1 !important; font-size:.7rem !important; line-height:1.35 !important;
 }
 .project-feature-check {
-  flex:0 0 auto; width:1.05rem; height:1.05rem; margin-top:.02rem; padding:.14rem;
+  flex:0 0 auto; width:.9rem; height:.9rem; margin-top:.03rem; padding:.12rem;
   border-radius:50%; color:#67e8f9; background:rgba(0,217,245,.12);
+}
+@media (prefers-reduced-motion:no-preference) {
+  html.motion-enabled #projects .project-feature-row {
+    opacity:0 !important;
+    transform:translateY(7px) !important;
+    transition:opacity .38s ease,transform .38s ease !important;
+  }
+  html.motion-enabled #projects .project-feature-row.is-visible {
+    opacity:1 !important;
+    transform:translateY(0) !important;
+  }
+  html.motion-enabled #projects .project-feature-row:nth-child(2) { transition-delay:90ms !important; }
+  html.motion-enabled #projects .project-feature-row:nth-child(3) { transition-delay:180ms !important; }
 }
 
 /* Voice playback gives the robot a small speaking animation */

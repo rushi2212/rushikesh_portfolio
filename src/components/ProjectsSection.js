@@ -17,7 +17,7 @@ export default function ProjectsSection({ projects }) {
           {projects.map((project, index) => (
             <article
               key={project.id}
-              className={`project-card project-card-${index + 1} bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-2 border border-slate-100 flex flex-col h-full`}
+              className={`project-card project-card-${index + 1} bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-2 flex flex-col h-full`}
             >
               <div className="project-image relative overflow-hidden">
                 <img

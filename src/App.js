@@ -817,6 +817,11 @@ const App = () => {
           <i className="robot-3d-foot robot-3d-foot-left"></i>
           <i className="robot-3d-foot robot-3d-foot-right"></i>
         </button>
+        {isVoicePending && (
+          <span className="robot-voice-hint" role="status">
+            Tap anywhere to hear my intro
+          </span>
+        )}
       </div>
       <div
         className={

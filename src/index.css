@@ -810,7 +810,6 @@ html.dark body { background:#050505; color:#f4f7fb; }
 }
 #projects .project-feature-row { padding:0 !important; }
 #projects .project-feature-row,
-#projects .project-feature-row:hover,
 #projects .project-feature-row:focus,
 #projects .project-feature-row::before,
 #projects .project-feature-row::after {
@@ -976,16 +975,19 @@ html.dark body { background:#050505; color:#f4f7fb; }
 #projects .project-card .project-feature-row:hover {
   transform:none !important;
   scale:1 !important;
+  font-size:.7rem !important;
+  line-height:1.35 !important;
 }
+#projects .project-card .project-feature-row:hover { transition:none !important; }
 @media (prefers-reduced-motion:no-preference) {
   html.motion-enabled #projects .project-feature-row {
     opacity:0 !important;
-    transform:translateY(7px) !important;
-    transition:opacity .38s ease,transform .38s ease !important;
+    transform:none !important;
+    transition:opacity .38s ease !important;
   }
   html.motion-enabled #projects .project-feature-row.is-visible {
     opacity:1 !important;
-    transform:translateY(0) !important;
+    transform:none !important;
   }
   html.motion-enabled #projects .project-feature-row:nth-child(2) { transition-delay:90ms !important; }
   html.motion-enabled #projects .project-feature-row:nth-child(3) { transition-delay:180ms !important; }
@@ -1007,6 +1009,13 @@ html.dark body { background:#050505; color:#f4f7fb; }
 .robot-3d-companion.is-speaking .robot-3d-arm-right { animation:robot-wave-right .52s ease-in-out infinite alternate; }
 .robot-3d-companion.is-pending .robot-3d-arm-left { animation:robot-wave-left 1s ease-in-out infinite alternate; }
 .robot-3d-companion.is-pending .robot-3d-arm-right { animation:robot-wave-right 1.1s ease-in-out infinite alternate; }
+.robot-voice-hint {
+  position:absolute; right:7rem; bottom:2.25rem; width:max-content; max-width:calc(100vw - 8rem);
+  padding:.55rem .8rem; border:1px solid rgba(34,211,238,.24); border-radius:999px;
+  color:#dffaff; background:rgba(8,15,28,.94); box-shadow:0 8px 24px rgba(0,0,0,.28);
+  font-size:.75rem; line-height:1rem; pointer-events:none; animation:robot-hint-in .25s ease-out both;
+}
+@keyframes robot-hint-in { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
 @keyframes robot-wave-left { from { transform:rotate(12deg); } to { transform:rotate(48deg); } }
 @keyframes robot-wave-right { from { transform:rotate(-12deg); } to { transform:rotate(-42deg); } }
 @keyframes robot-voice-ring {
@@ -1017,6 +1026,7 @@ html.dark body { background:#050505; color:#f4f7fb; }
 @keyframes robot-talk { to { transform:scaleX(1.5); } }
 @media (max-width:700px) {
   .robot-3d-companion { animation-name:robot-scroll-float-mobile; }
+  .robot-voice-hint { right:5.2rem; bottom:1.7rem; }
   @keyframes robot-scroll-float-mobile {
     0%,100% { transform:scale(.83) translateY(calc(var(--scroll-offset,0px) - 3px)) rotateY(calc(-10deg + var(--scroll-tilt,0deg))) rotateZ(-1deg); }
     50% { transform:scale(.83) translateY(calc(var(--scroll-offset,0px) + 3px)) rotateY(calc(-10deg + var(--scroll-tilt,0deg))) rotateZ(2deg); }

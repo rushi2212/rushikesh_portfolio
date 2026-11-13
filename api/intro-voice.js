@@ -7,8 +7,7 @@ module.exports = async function introVoice(req, res) {
   }
 
   const apiKey = process.env.ELEVENLABS_API_KEY;
-  const voiceId =
-    process.env.ELEVENLABS_VOICE_ID || "fPIfC3elMLbN9tNwMXkw";
+  const voiceId = "fPIfC3elMLbN9tNwMXkw";
 
   if (!apiKey) {
     return res.status(503).json({ error: "ElevenLabs is not configured" });

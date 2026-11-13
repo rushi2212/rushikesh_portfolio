@@ -221,12 +221,32 @@ a, button { -webkit-tap-highlight-color: transparent; }
 a:not([class]), button { transition: color .2s ease, background-color .2s ease, transform .2s ease; }
 button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid rgba(34,211,238,.65); outline-offset: 3px; }
 
-/* Entrance motion */
+/* Scroll reveal, staggered cards, and a distinct hero entrance */
 @media (prefers-reduced-motion: no-preference) {
-  #about { animation: hero-enter .8s cubic-bezier(.2,.7,.2,1) both; }
-  section[id] { animation: section-enter .7s cubic-bezier(.2,.7,.2,1) both; }
-  @keyframes hero-enter { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
-  @keyframes section-enter { from { opacity:.72; } to { opacity:1; } }
+  html.motion-enabled section[id],
+  html.motion-enabled section[id] .grid > div,
+  html.motion-enabled section[id] .grid > a {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+    transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1);
+    will-change: opacity, transform;
+  }
+  html.motion-enabled section[id].is-visible,
+  html.motion-enabled section[id] .grid > div.is-visible,
+  html.motion-enabled section[id] .grid > a.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  html.motion-enabled section[id] .grid > div:nth-child(2),
+  html.motion-enabled section[id] .grid > a:nth-child(2) { transition-delay: 90ms; }
+  html.motion-enabled section[id] .grid > div:nth-child(3),
+  html.motion-enabled section[id] .grid > a:nth-child(3) { transition-delay: 180ms; }
+  html.motion-enabled section[id] .grid > div:nth-child(4),
+  html.motion-enabled section[id] .grid > a:nth-child(4) { transition-delay: 270ms; }
+  #about h1 { animation: hero-title-in .8s cubic-bezier(.2,.75,.2,1) both; }
+  #about img { animation: hero-image-in .9s .12s cubic-bezier(.2,.75,.2,1) both; }
+  @keyframes hero-title-in { from { opacity: 0; transform: translateY(26px); filter: blur(6px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+  @keyframes hero-image-in { from { opacity: 0; transform: translateY(18px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }

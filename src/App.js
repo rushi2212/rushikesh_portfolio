@@ -101,6 +101,34 @@ const App = () => {
   }, []);
 
   useEffect(() => {
+    if (isLoading) return undefined;
+
+    const targets = document.querySelectorAll(
+      "section[id], section[id] .grid > div, section[id] .grid > a",
+    );
+    if (!("IntersectionObserver" in window)) return undefined;
+
+    document.documentElement.classList.add("motion-enabled");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+    );
+
+    targets.forEach((target) => observer.observe(target));
+    return () => {
+      observer.disconnect();
+      document.documentElement.classList.remove("motion-enabled");
+    };
+  }, [isLoading]);
+
+  useEffect(() => {
     const handlePointerMove = (event) => {
       setCursor({
         x: event.clientX,

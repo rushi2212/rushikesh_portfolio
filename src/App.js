@@ -109,6 +109,17 @@ const App = () => {
     if (!("IntersectionObserver" in window)) return undefined;
 
     document.documentElement.classList.add("motion-enabled");
+    const spotlightTargets = document.querySelectorAll(
+      "#projects .grid > div, #skills .grid > div",
+    );
+    const updateSpotlight = (event) => {
+      const bounds = event.currentTarget.getBoundingClientRect();
+      event.currentTarget.style.setProperty("--spot-x", `${event.clientX - bounds.left}px`);
+      event.currentTarget.style.setProperty("--spot-y", `${event.clientY - bounds.top}px`);
+    };
+    spotlightTargets.forEach((target) => {
+      target.addEventListener("pointermove", updateSpotlight, { passive: true });
+    });
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -124,6 +135,9 @@ const App = () => {
     targets.forEach((target) => observer.observe(target));
     return () => {
       observer.disconnect();
+      spotlightTargets.forEach((target) => {
+        target.removeEventListener("pointermove", updateSpotlight);
+      });
       document.documentElement.classList.remove("motion-enabled");
     };
   }, [isLoading]);
@@ -606,16 +620,20 @@ const App = () => {
           ? "bg-[#050816] text-slate-100"
           : "bg-gradient-to-br from-slate-50 to-blue-50 text-slate-900"
       }`}
-      style={{ colorScheme: theme }}
+      style={{
+        colorScheme: theme,
+        "--cursor-x": `${cursor.x}px`,
+        "--cursor-y": `${cursor.y}px`,
+      }}
     >
       <div className="code-atmosphere" aria-hidden="true">
         <span className="code-symbol code-symbol-one">&lt;/&gt;</span>
         <span className="code-symbol code-symbol-two">&#123; &#125;</span>
-        <span className="code-symbol code-symbol-three">01&nbsp; /&nbsp; 0</span>
+        <span className="code-symbol code-symbol-three">⌘</span>
         <span className="code-symbol code-symbol-four">();</span>
         <div className="code-terminal">
-          <div className="code-terminal-bar"><i></i><i></i><i></i><span>developer@portfolio:~</span></div>
-          <pre><b>const</b> ideas = <em>"build"</em>;<br /><b>while</b> (curious) &#123;<br />&nbsp;&nbsp;create();<br />&#125;</pre>
+          <div className="code-terminal-bar"><i></i><i></i><i></i></div>
+          <div className="code-terminal-lines"><i></i><i></i><i></i><i></i><i></i></div>
         </div>
         <div className="code-trace code-trace-one"></div>
         <div className="code-trace code-trace-two"></div>
@@ -1030,7 +1048,6 @@ const App = () => {
                     alt={project.title}
                     className="w-full h-52 object-cover transform hover:scale-105 transition-transform duration-500"
                   />
-                  <span className="project-image-label">{project.date || "Featured project"}</span>
                 </div>
                 <div className="p-6 lg:p-7 flex-1 flex flex-col">
                   <div className="flex-1">
@@ -1046,7 +1063,7 @@ const App = () => {
 
                     <div className="mb-4">
                       <h4 className="font-semibold mb-2 text-slate-700 text-xs uppercase tracking-[0.14em]">
-                        What it does
+                        Key Features:
                       </h4>
                       <div className="grid grid-cols-1 gap-1">
                         {project.features.slice(0, 3).map((feature, i) => (
@@ -1111,7 +1128,6 @@ const App = () => {
               >
                 <div className="skill-card-heading">
                   <div className="skill-icon text-blue-600">{skill.icon}</div>
-                  <span className="skill-count">{String(skill.items.length).padStart(2, "0")} skills</span>
                 </div>
                 <h3 className="text-xl font-semibold mb-5 text-slate-800">
                   {skill.category}

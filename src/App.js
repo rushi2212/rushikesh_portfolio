@@ -206,6 +206,35 @@ const App = () => {
   ];
   const projects = [
     {
+      id: 0,
+      title: "CareerPilot AI",
+      subtitle: "AI-Powered Career Development Platform",
+      description:
+        "An AI-powered career workspace that helps job seekers assess their resumes, build targeted skills, practice interviews, discover jobs, and manage applications.",
+      features: [
+        "AI tutor and quizzes",
+        "Resume analysis",
+        "Personalized learning roadmap",
+        "Mock interviews",
+        "Job search and application tracking",
+        "Document Q&A",
+      ],
+      tech: [
+        "React",
+        "TypeScript",
+        "FastAPI",
+        "PostgreSQL",
+        "Groq API",
+        "Qdrant",
+        "FastEmbed",
+        "Docker",
+        "Vercel",
+        "Render",
+      ],
+      link: "#",
+      image: "/careerpilot.png",
+    },
+    {
       id: 1,
       title: "MindSpace",
       subtitle: "Unified AI Workspace for Creators",

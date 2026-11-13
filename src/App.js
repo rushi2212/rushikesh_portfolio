@@ -1006,20 +1006,21 @@ const App = () => {
               Showcase of my latest work in web development and AI integration
             </p>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-7">
             {projects.map((project) => (
               <div
                 key={project.id}
                 className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-2 border border-slate-100 flex flex-col h-full"
               >
-                <div className="relative overflow-hidden">
+                <div className="project-image relative overflow-hidden">
                   <img
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-48 object-cover transform hover:scale-105 transition-transform duration-300"
+                    className="w-full h-52 object-cover transform hover:scale-105 transition-transform duration-500"
                   />
+                  <span className="project-image-label">{project.date || "Featured project"}</span>
                 </div>
-                <div className="p-6 flex-1 flex flex-col">
+                <div className="p-6 lg:p-7 flex-1 flex flex-col">
                   <div className="flex-1">
                     <h3 className="text-xl font-bold mb-2 text-slate-800">
                       {project.title}
@@ -1027,13 +1028,13 @@ const App = () => {
                     <p className="text-blue-600 font-medium mb-3 text-sm">
                       {project.subtitle}
                     </p>
-                    <p className="text-slate-600 mb-4 leading-relaxed text-sm line-clamp-3">
+                    <p className="text-slate-600 mb-5 leading-relaxed text-sm line-clamp-3">
                       {project.description}
                     </p>
 
                     <div className="mb-4">
-                      <h4 className="font-semibold mb-2 text-slate-700 text-sm">
-                        Key Features:
+                      <h4 className="font-semibold mb-2 text-slate-700 text-xs uppercase tracking-[0.14em]">
+                        What it does
                       </h4>
                       <div className="grid grid-cols-1 gap-1">
                         {project.features.slice(0, 3).map((feature, i) => (
@@ -1048,11 +1049,11 @@ const App = () => {
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap gap-1 mb-4">
+                    <div className="flex flex-wrap gap-2 mb-5">
                       {project.tech.slice(0, 4).map((tech, i) => (
                         <span
                           key={i}
-                          className="bg-slate-100 text-slate-700 px-2 py-1 rounded-full text-xs font-medium"
+                          className="bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg text-[11px] font-semibold"
                         >
                           {tech}
                         </span>
@@ -1090,24 +1091,27 @@ const App = () => {
               development
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 lg:gap-6">
             {skills.map((skill, index) => (
               <div
                 key={index}
-                className="bg-slate-50 rounded-2xl p-6 hover:shadow-xl transition-all transform hover:-translate-y-1 border border-slate-100"
+                className="skill-card bg-slate-50 rounded-2xl p-6 lg:p-7 hover:shadow-xl transition-all transform hover:-translate-y-1 border border-slate-100"
               >
-                <div className="text-blue-600 mb-4">{skill.icon}</div>
-                <h3 className="text-xl font-semibold mb-4 text-slate-800">
+                <div className="skill-card-heading">
+                  <div className="skill-icon text-blue-600">{skill.icon}</div>
+                  <span className="skill-count">{String(skill.items.length).padStart(2, "0")} skills</span>
+                </div>
+                <h3 className="text-xl font-semibold mb-5 text-slate-800">
                   {skill.category}
                 </h3>
-                <div className="space-y-2">
+                <div className="flex flex-wrap gap-2">
                   {skill.items.map((item, i) => (
-                    <div
+                    <span
                       key={i}
-                      className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-medium"
+                      className="skill-chip bg-blue-50 text-blue-700 px-3 py-1.5 rounded-lg text-xs font-medium"
                     >
                       {item}
-                    </div>
+                    </span>
                   ))}
                 </div>
               </div>
@@ -1243,7 +1247,7 @@ const App = () => {
       </section>
 
       {/* Experience Section */}
-      <section className="bg-white py-20">
+      <section id="experience" className="bg-white py-20">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-slate-800 mb-4">
@@ -1304,7 +1308,7 @@ const App = () => {
       </section>
 
       {/* Education Section */}
-      <section className="py-20">
+      <section id="education" className="py-20">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-slate-800 mb-4">

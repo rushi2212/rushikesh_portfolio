@@ -63,7 +63,7 @@ module.exports = async function introVoice(req, res) {
       const userMessage = {
         400: "ElevenLabs rejected the text or voice settings. Check the Vercel function logs.",
         401: "ElevenLabs rejected the API key. Verify ELEVENLABS_API_KEY and redeploy.",
-        402: "The ElevenLabs account needs available credits for text to speech.",
+        402: "The API key used by Vercel has insufficient Text to Speech credits. Check that the key belongs to the workspace with your available balance.",
         403: "The API key may lack Text to Speech access or access to this voice.",
         404: "The voice ID was not found or is unavailable to this ElevenLabs account.",
         422: "ElevenLabs rejected the request parameters. Check the Vercel function logs.",

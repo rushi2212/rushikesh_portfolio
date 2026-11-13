@@ -56,14 +56,14 @@ const App = () => {
             !response.ok ||
             !response.headers.get("content-type")?.includes("audio")
           ) {
-            return response
-              .json()
-              .catch(() => ({}))
-              .then((errorBody) => {
-                throw new Error(
-                  errorBody.error || "ElevenLabs audio is not available.",
-                );
-              });
+            return response.json().catch(() => ({})).then((errorBody) => {
+              const providerCode = errorBody.providerCode
+                ? ` (ElevenLabs code: ${errorBody.providerCode})`
+                : "";
+              throw new Error(
+                `${errorBody.error || "ElevenLabs audio is not available."}${providerCode}`,
+              );
+            });
           }
           return response.blob();
         })
@@ -200,10 +200,6 @@ const App = () => {
     },
     [],
   );
-
-  useEffect(() => {
-    loadIntroAudioRef.current?.().catch(() => {});
-  }, []);
 
   useEffect(() => {
     if (submitStatus !== "success") return undefined;

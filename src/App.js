@@ -628,10 +628,34 @@ const App = () => {
       </div>
       <div className="ambient-robots" aria-hidden="true">
         <span
-          className="ambient-robot ambient-robot-companion"
-          style={{ "--scroll-offset": `${Math.sin(scrollY / 140) * 14}px` }}
+          className="robot-3d-companion"
+          style={{
+            "--scroll-offset": `${Math.sin(scrollY / 140) * 14}px`,
+            "--scroll-tilt": `${Math.cos(scrollY / 180) * 8}deg`,
+          }}
         >
-          <Bot size={22} strokeWidth={1.5} />
+          <i className="robot-3d-shadow"></i>
+          <i className="robot-3d-antenna"><i></i></i>
+          <i className="robot-3d-ear robot-3d-ear-left"></i>
+          <i className="robot-3d-ear robot-3d-ear-right"></i>
+          <i className="robot-3d-head">
+            <i className="robot-3d-face">
+              <i className="robot-3d-eye robot-3d-eye-left"></i>
+              <i className="robot-3d-eye robot-3d-eye-right"></i>
+              <i className="robot-3d-mouth"></i>
+            </i>
+          </i>
+          <i className="robot-3d-neck"></i>
+          <i className="robot-3d-arm robot-3d-arm-left"></i>
+          <i className="robot-3d-arm robot-3d-arm-right"></i>
+          <i className="robot-3d-body">
+            <i className="robot-3d-core"></i>
+            <i className="robot-3d-panel-light"></i>
+          </i>
+          <i className="robot-3d-leg robot-3d-leg-left"></i>
+          <i className="robot-3d-leg robot-3d-leg-right"></i>
+          <i className="robot-3d-foot robot-3d-foot-left"></i>
+          <i className="robot-3d-foot robot-3d-foot-right"></i>
         </span>
       </div>
       <div

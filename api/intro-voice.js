@@ -8,7 +8,7 @@ module.exports = async function introVoice(req, res) {
 
   const apiKey = process.env.ELEVENLABS_API_KEY;
   const voiceId =
-    process.env.ELEVENLABS_VOICE_ID || "JBFqnCBsd6RMkjVDRZzb";
+    process.env.ELEVENLABS_VOICE_ID || "fPIfC3elMLbN9tNwMXkw";
 
   if (!apiKey) {
     return res.status(503).json({ error: "ElevenLabs is not configured" });
@@ -27,6 +27,13 @@ module.exports = async function introVoice(req, res) {
         body: JSON.stringify({
           text: introductionText,
           model_id: "eleven_multilingual_v2",
+          voice_settings: {
+            stability: 0.62,
+            similarity_boost: 0.8,
+            style: 0,
+            use_speaker_boost: true,
+            speed: 0.96,
+          },
         }),
       },
     );

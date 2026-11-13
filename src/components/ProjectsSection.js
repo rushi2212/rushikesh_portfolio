@@ -23,7 +23,7 @@ export default function ProjectsSection({ projects }) {
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-52 object-cover transform hover:scale-105 transition-transform duration-500"
+                  className="w-full h-52 object-cover"
                 />
               </div>
               <div className="p-6 lg:p-7 flex-1 flex flex-col">
@@ -69,7 +69,7 @@ export default function ProjectsSection({ projects }) {
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full transition-all transform hover:scale-105 text-sm w-full justify-center"
+                    className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full transition-colors text-sm w-full justify-center"
                   >
                     <ExternalLink size={14} />
                     View Project

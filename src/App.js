@@ -21,6 +21,7 @@ import {
   Send,
   User,
   MessageCircle,
+  CheckCircle2,
   Instagram,
   Menu,
   X,
@@ -35,10 +36,41 @@ const App = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("");
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isVoicePending, setIsVoicePending] = useState(false);
   const [cursor, setCursor] = useState({ x: 0, y: 0, visible: false });
   const audioRef = useRef(null);
   const introAudioUrlRef = useRef(null);
+  const introAudioPromiseRef = useRef(null);
+  const loadIntroAudioRef = useRef(null);
   const voiceRequestRef = useRef(0);
+  const pendingGestureRef = useRef(null);
+  const handleRobotClickRef = useRef(null);
+
+  loadIntroAudioRef.current = () => {
+    if (introAudioUrlRef.current) return Promise.resolve(introAudioUrlRef.current);
+    if (!introAudioPromiseRef.current) {
+      introAudioPromiseRef.current = fetch("/api/intro-voice")
+        .then((response) => {
+          if (
+            !response.ok ||
+            !response.headers.get("content-type")?.includes("audio")
+          ) {
+            throw new Error("ElevenLabs audio is not available");
+          }
+          return response.blob();
+        })
+        .then((audioBlob) => {
+          const audioUrl = URL.createObjectURL(audioBlob);
+          introAudioUrlRef.current = audioUrl;
+          return audioUrl;
+        })
+        .catch((error) => {
+          introAudioPromiseRef.current = null;
+          throw error;
+        });
+    }
+    return introAudioPromiseRef.current;
+  };
 
   const speakWithBrowserVoice = (requestId) => {
     if (voiceRequestRef.current !== requestId) return;
@@ -53,52 +85,67 @@ const App = () => {
       if (voiceRequestRef.current === requestId) setIsSpeaking(false);
     };
     utterance.onerror = () => {
-      if (voiceRequestRef.current === requestId) setIsSpeaking(false);
+      if (voiceRequestRef.current === requestId) {
+        setIsSpeaking(false);
+        setIsVoicePending(true);
+      }
     };
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utterance);
   };
 
-  const handleRobotClick = async () => {
+  const handleRobotClick = () => {
     if (isSpeaking) {
       voiceRequestRef.current += 1;
       audioRef.current?.pause();
       audioRef.current = null;
       if ("speechSynthesis" in window) window.speechSynthesis.cancel();
       setIsSpeaking(false);
+      setIsVoicePending(false);
       return;
     }
 
     const requestId = voiceRequestRef.current + 1;
     voiceRequestRef.current = requestId;
     setIsSpeaking(true);
+    setIsVoicePending(false);
 
-    try {
-      let audioUrl = introAudioUrlRef.current;
-      if (!audioUrl) {
-        const response = await fetch("/api/intro-voice");
-        if (!response.ok || !response.headers.get("content-type")?.includes("audio")) {
-          throw new Error("ElevenLabs audio is not available");
-        }
-        const audioBlob = await response.blob();
-        if (voiceRequestRef.current !== requestId) return;
-        audioUrl = URL.createObjectURL(audioBlob);
-        introAudioUrlRef.current = audioUrl;
-      }
-
-      if (voiceRequestRef.current !== requestId) return;
+    const playAudio = (audioUrl) => {
       const audio = new Audio(audioUrl);
       audioRef.current = audio;
       audio.onended = () => {
         if (voiceRequestRef.current === requestId) setIsSpeaking(false);
         audioRef.current = null;
       };
-      audio.onerror = () => speakWithBrowserVoice(requestId);
-      await audio.play();
-    } catch {
-      if (voiceRequestRef.current === requestId) speakWithBrowserVoice(requestId);
+      audio.onerror = () => {
+        audioRef.current = null;
+        speakWithBrowserVoice(requestId);
+      };
+      audio.play().catch((error) => {
+        if (voiceRequestRef.current !== requestId) return;
+        audioRef.current = null;
+        if (error.name === "NotAllowedError") {
+          setIsSpeaking(false);
+          setIsVoicePending(true);
+        } else {
+          speakWithBrowserVoice(requestId);
+        }
+      });
+    };
+
+    if (introAudioUrlRef.current) {
+      playAudio(introAudioUrlRef.current);
+      return;
     }
+
+    loadIntroAudioRef.current()
+      .then((audioUrl) => {
+        if (voiceRequestRef.current === requestId) playAudio(audioUrl);
+      })
+      .catch(() => speakWithBrowserVoice(requestId));
   };
+
+  handleRobotClickRef.current = handleRobotClick;
 
   const handleChange = (e) => {
     setFormData({
@@ -155,6 +202,41 @@ const App = () => {
     },
     [],
   );
+
+  useEffect(() => {
+    loadIntroAudioRef.current?.().catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (isLoading) return undefined;
+    const timer = setTimeout(() => handleRobotClickRef.current?.(), 250);
+    return () => clearTimeout(timer);
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (!isVoicePending) return undefined;
+
+    const resumeVoice = (event) => {
+      if (event.target.closest?.(".robot-3d-companion")) return;
+      window.removeEventListener("pointerdown", resumeVoice);
+      window.removeEventListener("keydown", resumeVoice);
+      pendingGestureRef.current = null;
+      handleRobotClickRef.current?.();
+    };
+    pendingGestureRef.current = resumeVoice;
+    window.addEventListener("pointerdown", resumeVoice);
+    window.addEventListener("keydown", resumeVoice);
+    return () => {
+      window.removeEventListener("pointerdown", resumeVoice);
+      window.removeEventListener("keydown", resumeVoice);
+    };
+  }, [isVoicePending]);
+
+  useEffect(() => {
+    if (submitStatus !== "success") return undefined;
+    const timer = setTimeout(() => setSubmitStatus(""), 6000);
+    return () => clearTimeout(timer);
+  }, [submitStatus]);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -703,8 +785,8 @@ const App = () => {
       <div className="ambient-robots">
         <button
           type="button"
-          className={`robot-3d-companion${isSpeaking ? " is-speaking" : ""}`}
-          aria-label={isSpeaking ? "Stop introduction" : "Hear my introduction"}
+          className={`robot-3d-companion${isSpeaking ? " is-speaking" : ""}${isVoicePending ? " is-pending" : ""}`}
+          aria-label={isSpeaking ? "Stop introduction" : isVoicePending ? "Play introduction" : "Hear my introduction"}
           aria-pressed={isSpeaking}
           onClick={handleRobotClick}
           style={{
@@ -1509,11 +1591,20 @@ const App = () => {
                   </button>
 
                   {submitStatus === "success" && (
-                    <div className="bg-green-600 text-white p-4 rounded-lg text-center">
-                      <p className="font-medium">Message sent successfully!</p>
-                      <p className="text-sm text-green-100">
-                        I'll get back to you soon.
-                      </p>
+                    <div className="form-success-toast" role="status" aria-live="polite">
+                      <CheckCircle2 className="form-success-icon" size={24} aria-hidden="true" />
+                      <div className="form-success-copy">
+                        <p className="font-semibold">Message sent</p>
+                        <p>I’ll get back to you as soon as I can.</p>
+                      </div>
+                      <button
+                        type="button"
+                        className="form-success-dismiss"
+                        aria-label="Dismiss notification"
+                        onClick={() => setSubmitStatus("")}
+                      >
+                        <X size={17} aria-hidden="true" />
+                      </button>
                     </div>
                   )}
 

@@ -781,4 +781,7 @@ html.dark body { background:#050505; color:#f4f7fb; }
   #projects .portfolio-project-grid .project-card-7 .project-image,
   #projects .portfolio-project-grid .project-card-8 .project-image { height:13rem !important; min-height:13rem !important; }
 }
+#projects .project-card { border:0 !important; outline:0 !important; }
+#projects .project-card::before { display:none !important; }
+#projects .project-features { border:0 !important; outline:0 !important; box-shadow:none !important; background:transparent !important; }
 

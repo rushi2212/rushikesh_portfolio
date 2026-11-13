@@ -37,7 +37,7 @@ export default function ProjectsSection({ projects }) {
                   <p className="text-slate-600 mb-5 leading-relaxed text-sm line-clamp-3">
                     {project.description}
                   </p>
-                  <div className="mb-4">
+                  <div className="project-features mb-4">
                     <h4 className="font-semibold mb-2 text-slate-700 text-xs uppercase tracking-[0.14em]">
                       Key Features:
                     </h4>

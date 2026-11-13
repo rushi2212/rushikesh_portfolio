@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import ProjectsSection from "./components/ProjectsSection";
+import SkillsSection from "./components/SkillsSection";
 import {
   ChevronLeft,
   ChevronRight,
@@ -6,7 +8,6 @@ import {
   Mail,
   Phone,
   Linkedin,
-  ExternalLink,
   Award,
   Calendar,
   MapPin,
@@ -20,8 +21,6 @@ import {
   User,
   MessageCircle,
   Instagram,
-  Moon,
-  Sun,
   Menu,
   X,
 } from "lucide-react";
@@ -72,27 +71,16 @@ const App = () => {
   const [currentCertificate, setCurrentCertificate] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [scrollY, setScrollY] = useState(0);
-  const [theme, setTheme] = useState("dark");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const isDark = theme === "dark";
+  const isDark = false;
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("portfolio-theme");
-
-    if (savedTheme === "dark" || savedTheme === "light") {
-      setTheme(savedTheme);
-    }
+    document.documentElement.classList.remove("dark");
+    document.documentElement.style.colorScheme = "light";
 
     const timer = setTimeout(() => setIsLoading(false), 1500);
     return () => clearTimeout(timer);
   }, []);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", isDark);
-    document.documentElement.style.colorScheme = theme;
-    localStorage.setItem("portfolio-theme", theme);
-  }, [isDark, theme]);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -273,7 +261,7 @@ const App = () => {
         "Vercel",
         "Render",
       ],
-      link: "#",
+      link: "https://career-pilot-ai-nine-psi.vercel.app/",
       image: "/careerpilot.png",
     },
     {
@@ -621,7 +609,7 @@ const App = () => {
           : "bg-gradient-to-br from-slate-50 to-blue-50 text-slate-900"
       }`}
       style={{
-        colorScheme: theme,
+        colorScheme: "light",
         "--cursor-x": `${cursor.x}px`,
         "--cursor-y": `${cursor.y}px`,
       }}
@@ -678,22 +666,6 @@ const App = () => {
               </div>
             </div>
             <div className="flex items-center gap-2 md:gap-3">
-              <button
-                type="button"
-                onClick={() =>
-                  setTheme((currentTheme) =>
-                    currentTheme === "dark" ? "light" : "dark",
-                  )
-                }
-                className={
-                  isDark
-                    ? "inline-flex md:hidden h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-100 backdrop-blur-md transition-all hover:border-blue-400/40 hover:bg-white/10"
-                    : "inline-flex md:hidden h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-100 text-slate-800 shadow-sm transition-all hover:border-blue-400/40 hover:bg-slate-200"
-                }
-                aria-label="Toggle theme"
-              >
-                {isDark ? <Sun size={16} /> : <Moon size={16} />}
-              </button>
               <div className="hidden md:flex items-center space-x-8">
                 <a
                   href="#about"
@@ -745,22 +717,6 @@ const App = () => {
                 >
                   Certifications
                 </a>
-                <button
-                  type="button"
-                  onClick={() =>
-                    setTheme((currentTheme) =>
-                      currentTheme === "dark" ? "light" : "dark",
-                    )
-                  }
-                  className={
-                    isDark
-                      ? "inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-100 backdrop-blur-md transition-all hover:border-blue-400/40 hover:bg-white/10"
-                      : "inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-slate-100 text-slate-800 shadow-sm transition-all hover:border-blue-400/40 hover:bg-slate-200"
-                  }
-                  aria-label="Toggle theme"
-                >
-                  {isDark ? <Sun size={16} /> : <Moon size={16} />}
-                </button>
                 <a
                   href="#contact"
                   className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-all"
@@ -1025,128 +981,8 @@ const App = () => {
         </div>
       </section>
 
-      {/* Projects Section */}
-      <section id="projects" className="py-20">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-800 mb-4">
-              Featured Projects
-            </h2>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-              Showcase of my latest work in web development and AI integration
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-7">
-            {projects.map((project) => (
-              <div
-                key={project.id}
-                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-2 border border-slate-100 flex flex-col h-full"
-              >
-                <div className="project-image relative overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-52 object-cover transform hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-                <div className="p-6 lg:p-7 flex-1 flex flex-col">
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold mb-2 text-slate-800">
-                      {project.title}
-                    </h3>
-                    <p className="text-blue-600 font-medium mb-3 text-sm">
-                      {project.subtitle}
-                    </p>
-                    <p className="text-slate-600 mb-5 leading-relaxed text-sm line-clamp-3">
-                      {project.description}
-                    </p>
-
-                    <div className="mb-4">
-                      <h4 className="font-semibold mb-2 text-slate-700 text-xs uppercase tracking-[0.14em]">
-                        Key Features:
-                      </h4>
-                      <div className="grid grid-cols-1 gap-1">
-                        {project.features.slice(0, 3).map((feature, i) => (
-                          <div
-                            key={i}
-                            className="flex items-center gap-2 text-xs text-slate-600"
-                          >
-                            <div className="w-1 h-1 bg-blue-600 rounded-full"></div>
-                            {feature}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="flex flex-wrap gap-2 mb-5">
-                      {project.tech.slice(0, 4).map((tech, i) => (
-                        <span
-                          key={i}
-                          className="bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg text-[11px] font-semibold"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mt-auto">
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full transition-all transform hover:scale-105 text-sm w-full justify-center"
-                    >
-                      <ExternalLink size={14} />
-                      View Project
-                    </a>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Skills Section (swapped) */}
-      <section id="skills" className="bg-white py-20">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-800 mb-4">
-              Technical Expertise
-            </h2>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-              Proficient in modern technologies and frameworks for full-stack
-              development
-            </p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 lg:gap-6">
-            {skills.map((skill, index) => (
-              <div
-                key={index}
-                className="skill-card bg-slate-50 rounded-2xl p-6 lg:p-7 hover:shadow-xl transition-all transform hover:-translate-y-1 border border-slate-100"
-              >
-                <div className="skill-card-heading">
-                  <div className="skill-icon text-blue-600">{skill.icon}</div>
-                </div>
-                <h3 className="text-xl font-semibold mb-5 text-slate-800">
-                  {skill.category}
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {skill.items.map((item, i) => (
-                    <span
-                      key={i}
-                      className="skill-chip bg-blue-50 text-blue-700 px-3 py-1.5 rounded-lg text-xs font-medium"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ProjectsSection projects={projects} />
+      <SkillsSection skills={skills} />
 
       {/* Certificates Section */}
       <section id="certifications" className="py-20">
@@ -1616,3 +1452,5 @@ const App = () => {
 };
 
 export default App;
+
+

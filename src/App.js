@@ -37,6 +37,7 @@ const App = () => {
   const [submitStatus, setSubmitStatus] = useState("");
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isVoicePending, setIsVoicePending] = useState(false);
+  const [activeSection, setActiveSection] = useState("about");
   const [cursor, setCursor] = useState({ x: 0, y: 0, visible: false });
   const audioRef = useRef(null);
   const introAudioUrlRef = useRef(null);
@@ -185,6 +186,8 @@ const App = () => {
   const [scrollY, setScrollY] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isDark = true;
+  const navLinkClass = (sectionId) =>
+    `portfolio-nav-link${activeSection === sectionId ? " is-active" : ""}`;
 
   useEffect(() => {
     document.documentElement.classList.add("dark");
@@ -242,6 +245,23 @@ const App = () => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (!("IntersectionObserver" in window)) return undefined;
+    const sectionIds = ["about", "skills", "projects", "achievements", "certifications", "contact"];
+    const sections = sectionIds.map((id) => document.getElementById(id)).filter(Boolean);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const current = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+        if (current) setActiveSection(current.target.id);
+      },
+      { rootMargin: "-18% 0px -68% 0px", threshold: 0 },
+    );
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -838,6 +858,7 @@ const App = () => {
 
       {/* Navigation */}
       <nav
+        aria-label="Primary navigation"
         className={`fixed top-0 w-full z-50 transition-all duration-300 ${
           scrollY > 50
             ? isDark
@@ -848,75 +869,56 @@ const App = () => {
       >
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 text-white font-bold shadow-lg shadow-blue-500/25">
+            <a href="#about" className="portfolio-nav-brand flex items-center gap-3" aria-label="Rushikesh Raut, home">
+              <div className="portfolio-nav-monogram flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 to-indigo-500 text-white font-bold shadow-lg shadow-cyan-500/20">
                 RR
               </div>
-              <div
-                className={
-                  isDark
-                    ? "text-lg font-semibold text-slate-100"
-                    : "text-lg font-semibold text-slate-900"
-                }
-              >
-                Rushikesh
+              <div className="flex flex-col gap-1 leading-none">
+                <span className="portfolio-nav-name">Rushikesh Raut</span>
+                <span className="portfolio-nav-role">FULL STACK · AI ENGINEER</span>
               </div>
-            </div>
+            </a>
             <div className="flex items-center gap-2 md:gap-3">
               <div className="hidden md:flex items-center space-x-8">
                 <a
                   href="#about"
-                  className={
-                    isDark
-                      ? "text-slate-300 hover:text-cyan-300 transition-colors font-medium"
-                      : "text-slate-600 hover:text-blue-600 transition-colors font-medium"
-                  }
+                  className={navLinkClass("about")}
+                  aria-current={activeSection === "about" ? "location" : undefined}
                 >
                   About
                 </a>
                 <a
                   href="#skills"
-                  className={
-                    isDark
-                      ? "text-slate-300 hover:text-cyan-300 transition-colors font-medium"
-                      : "text-slate-600 hover:text-blue-600 transition-colors font-medium"
-                  }
+                  className={navLinkClass("skills")}
+                  aria-current={activeSection === "skills" ? "location" : undefined}
                 >
                   Skills
                 </a>
                 <a
                   href="#projects"
-                  className={
-                    isDark
-                      ? "text-slate-300 hover:text-cyan-300 transition-colors font-medium"
-                      : "text-slate-600 hover:text-blue-600 transition-colors font-medium"
-                  }
+                  className={navLinkClass("projects")}
+                  aria-current={activeSection === "projects" ? "location" : undefined}
                 >
                   Projects
                 </a>
                 <a
                   href="#achievements"
-                  className={
-                    isDark
-                      ? "text-slate-300 hover:text-cyan-300 transition-colors font-medium"
-                      : "text-slate-600 hover:text-blue-600 transition-colors font-medium"
-                  }
+                  className={navLinkClass("achievements")}
+                  aria-current={activeSection === "achievements" ? "location" : undefined}
                 >
                   Achievements
                 </a>
                 <a
                   href="#certifications"
-                  className={
-                    isDark
-                      ? "text-slate-300 hover:text-cyan-300 transition-colors font-medium"
-                      : "text-slate-600 hover:text-blue-600 transition-colors font-medium"
-                  }
+                  className={navLinkClass("certifications")}
+                  aria-current={activeSection === "certifications" ? "location" : undefined}
                 >
                   Certifications
                 </a>
                 <a
                   href="#contact"
-                  className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-all"
+                  className={`portfolio-nav-cta${activeSection === "contact" ? " is-active" : ""}`}
+                  aria-current={activeSection === "contact" ? "location" : undefined}
                 >
                   Contact
                 </a>
@@ -932,11 +934,13 @@ const App = () => {
               }
               aria-label="Toggle mobile menu"
               aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-navigation"
             >
               {isMobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
           </div>
           <div
+            id="mobile-navigation"
             className={`md:hidden overflow-hidden transition-all duration-300 ${
               isMobileMenuOpen
                 ? "max-h-96 opacity-100 mt-4"
@@ -962,11 +966,8 @@ const App = () => {
                   key={href}
                   href={href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={
-                    isDark
-                      ? "block rounded-xl px-4 py-3 text-sm font-medium text-slate-200 transition-colors hover:bg-white/5 hover:text-cyan-300"
-                      : "block rounded-xl px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-blue-700"
-                  }
+                  className={`portfolio-mobile-link${activeSection === href.slice(1) ? " is-active" : ""}${href === "#contact" ? " is-contact" : ""}`}
+                  aria-current={activeSection === href.slice(1) ? "location" : undefined}
                 >
                   {label}
                 </a>
@@ -998,8 +999,8 @@ const App = () => {
                     : "text-5xl lg:text-6xl font-bold text-slate-900 leading-tight"
                 }
               >
-                Rushikesh
-                <span className="block text-cyan-400">Raut</span>
+                Hi, I'm
+                <span className="block text-cyan-400">Rushikesh Raut</span>
               </h1>
               <p
                 className={
@@ -1008,9 +1009,8 @@ const App = () => {
                     : "text-xl text-slate-600 leading-relaxed"
                 }
               >
-                Computer Engineering Graduate & Full-Stack Developer passionate
-                about creating innovative solutions with AI and modern web
-                technologies.
+                a Full Stack Developer and AI Engineer with a Computer
+                Engineering degree and a CGPA of 9.32.
               </p>
               <p
                 className={
@@ -1019,22 +1019,12 @@ const App = () => {
                     : "text-lg text-slate-500 leading-relaxed"
                 }
               >
-                Graduated in Computer Engineering from GCOEARA, Pune with a 9.32
-                CGPA, experienced in MERN stack, AI integration, and modern web
-                development.
+                I specialize in building modern web applications and AI-powered
+                solutions using React, Next.js, Python, FastAPI, LangChain,
+                LangGraph, RAG, and Agentic AI. I enjoy solving real-world
+                problems, exploring new technologies, and turning innovative
+                ideas into impactful products.
               </p>
-              <div
-                className={
-                  isDark
-                    ? "inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-sm text-slate-300 shadow-lg shadow-black/10"
-                    : "inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white/80 px-4 py-3 text-sm text-slate-600 shadow-lg shadow-slate-200/60"
-                }
-              >
-                <span className="font-semibold text-cyan-400">&lt;/&gt;</span>
-                <span>
-                  Building clean, scalable interfaces and AI-powered apps
-                </span>
-              </div>
               <div className="flex flex-wrap gap-4 pt-4">
                 <a
                   href="mailto:rushikesh220703@gmail.com"
@@ -1079,7 +1069,7 @@ const App = () => {
             </div>
           </div>
           <div className="lg:w-1/2 flex justify-center">
-            <div className="relative flex w-full max-w-lg items-center justify-center py-10 -translate-y-2 sm:-translate-y-4 lg:translate-y-0">
+            <div className="hero-photo-wrap relative flex w-full max-w-lg items-center justify-center py-10 -translate-y-2 sm:-translate-y-4 lg:translate-y-0">
               <div
                 className={
                   isDark

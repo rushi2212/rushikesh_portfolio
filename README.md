@@ -36,13 +36,13 @@ The robot requests its introduction audio from the serverless endpoint at
 ElevenLabs API key on the server instead of exposing it in the browser.
 
 Add `ELEVENLABS_API_KEY` to the Vercel project's environment variables. The
-endpoint uses voice ID `fPIfC3elMLbN9tNwMXkw`. For local testing, put the key in
-an untracked `.env.local` file and run `npx vercel dev`; `npm start` alone does
-not run the serverless voice endpoint. The robot attempts to greet visitors
-automatically, but browsers can block sound until the first click or keypress.
-When autoplay is blocked, the robot waves and prompts the visitor to tap or
-press a key. The browser's built-in speech is used if the API endpoint is
-unavailable.
+endpoint uses voice ID `fPIfC3elMLbN9tNwMXkw`. For local use, put the key in an
+untracked `.env.local` file and run `npm start`; the start script launches the
+React site and its local ElevenLabs API together. The robot attempts to greet
+visitors automatically, but browsers can block sound until the first click or
+keypress. When autoplay is blocked, the robot waves and prompts the visitor to
+tap or press a key. The browser's built-in speech is used if the API endpoint
+is unavailable.
 
 ### `npm run eject`
 

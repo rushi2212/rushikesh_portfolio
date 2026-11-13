@@ -27,8 +27,8 @@ module.exports = async function introVoice(req, res) {
           text: introductionText,
           model_id: "eleven_multilingual_v2",
           voice_settings: {
-            stability: 0.62,
-            similarity_boost: 0.8,
+            stability: 0.68,
+            similarity_boost: 0.82,
             style: 0,
             use_speaker_boost: true,
             speed: 0.96,

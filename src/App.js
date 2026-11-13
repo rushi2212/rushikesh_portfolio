@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import ProjectsSection from "./components/ProjectsSection";
 import SkillsSection from "./components/SkillsSection";
-import introductionText from "./content/introduction.json";
 import {
   ChevronLeft,
   ChevronRight,
@@ -37,6 +36,7 @@ const App = () => {
   const [submitStatus, setSubmitStatus] = useState("");
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isVoicePending, setIsVoicePending] = useState(false);
+  const [voiceError, setVoiceError] = useState("");
   const [activeSection, setActiveSection] = useState("about");
   const [cursor, setCursor] = useState({ x: 0, y: 0, visible: false });
   const audioRef = useRef(null);
@@ -44,13 +44,13 @@ const App = () => {
   const introAudioPromiseRef = useRef(null);
   const loadIntroAudioRef = useRef(null);
   const voiceRequestRef = useRef(0);
-  const pendingGestureRef = useRef(null);
-  const handleRobotClickRef = useRef(null);
 
   loadIntroAudioRef.current = () => {
     if (introAudioUrlRef.current) return Promise.resolve(introAudioUrlRef.current);
     if (!introAudioPromiseRef.current) {
-      introAudioPromiseRef.current = fetch("/api/intro-voice")
+      introAudioPromiseRef.current = fetch(
+        "/api/intro-voice?v=fPIfC3elMLbN9tNwMXkw-intro-v2",
+      )
         .then((response) => {
           if (
             !response.ok ||
@@ -73,36 +73,14 @@ const App = () => {
     return introAudioPromiseRef.current;
   };
 
-  const speakWithBrowserVoice = (requestId) => {
-    if (voiceRequestRef.current !== requestId) return;
-    if (typeof SpeechSynthesisUtterance === "undefined" || !("speechSynthesis" in window)) {
-      setIsSpeaking(false);
-      return;
-    }
-    const utterance = new SpeechSynthesisUtterance(introductionText);
-    utterance.rate = 0.96;
-    utterance.pitch = 1.02;
-    utterance.onend = () => {
-      if (voiceRequestRef.current === requestId) setIsSpeaking(false);
-    };
-    utterance.onerror = () => {
-      if (voiceRequestRef.current === requestId) {
-        setIsSpeaking(false);
-        setIsVoicePending(true);
-      }
-    };
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utterance);
-  };
-
   const handleRobotClick = () => {
     if (isSpeaking) {
       voiceRequestRef.current += 1;
       audioRef.current?.pause();
       audioRef.current = null;
-      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
       setIsSpeaking(false);
       setIsVoicePending(false);
+      setVoiceError("");
       return;
     }
 
@@ -110,6 +88,7 @@ const App = () => {
     voiceRequestRef.current = requestId;
     setIsSpeaking(true);
     setIsVoicePending(false);
+    setVoiceError("");
 
     const playAudio = (audioUrl) => {
       const audio = new Audio(audioUrl);
@@ -120,7 +99,11 @@ const App = () => {
       };
       audio.onerror = () => {
         audioRef.current = null;
-        speakWithBrowserVoice(requestId);
+        if (voiceRequestRef.current === requestId) {
+          setIsSpeaking(false);
+          setIsVoicePending(true);
+          setVoiceError("ElevenLabs audio could not be played. Click the robot to retry.");
+        }
       };
       audio.play().catch((error) => {
         if (voiceRequestRef.current !== requestId) return;
@@ -128,8 +111,11 @@ const App = () => {
         if (error.name === "NotAllowedError") {
           setIsSpeaking(false);
           setIsVoicePending(true);
+          setVoiceError("Click the robot again to allow audio playback.");
         } else {
-          speakWithBrowserVoice(requestId);
+          setIsSpeaking(false);
+          setIsVoicePending(true);
+          setVoiceError("ElevenLabs audio could not be played. Click the robot to retry.");
         }
       });
     };
@@ -143,10 +129,13 @@ const App = () => {
       .then((audioUrl) => {
         if (voiceRequestRef.current === requestId) playAudio(audioUrl);
       })
-      .catch(() => speakWithBrowserVoice(requestId));
+      .catch(() => {
+        if (voiceRequestRef.current !== requestId) return;
+        setIsSpeaking(false);
+        setIsVoicePending(true);
+        setVoiceError("ElevenLabs is unavailable. Check the API key and server setup.");
+      });
   };
-
-  handleRobotClickRef.current = handleRobotClick;
 
   const handleChange = (e) => {
     setFormData({
@@ -199,7 +188,6 @@ const App = () => {
 
   useEffect(
     () => () => {
-      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
       audioRef.current?.pause();
       if (introAudioUrlRef.current) URL.revokeObjectURL(introAudioUrlRef.current);
     },
@@ -209,31 +197,6 @@ const App = () => {
   useEffect(() => {
     loadIntroAudioRef.current?.().catch(() => {});
   }, []);
-
-  useEffect(() => {
-    if (isLoading) return undefined;
-    const timer = setTimeout(() => handleRobotClickRef.current?.(), 250);
-    return () => clearTimeout(timer);
-  }, [isLoading]);
-
-  useEffect(() => {
-    if (!isVoicePending) return undefined;
-
-    const resumeVoice = (event) => {
-      if (event.target.closest?.(".robot-3d-companion")) return;
-      window.removeEventListener("pointerdown", resumeVoice);
-      window.removeEventListener("keydown", resumeVoice);
-      pendingGestureRef.current = null;
-      handleRobotClickRef.current?.();
-    };
-    pendingGestureRef.current = resumeVoice;
-    window.addEventListener("pointerdown", resumeVoice);
-    window.addEventListener("keydown", resumeVoice);
-    return () => {
-      window.removeEventListener("pointerdown", resumeVoice);
-      window.removeEventListener("keydown", resumeVoice);
-    };
-  }, [isVoicePending]);
 
   useEffect(() => {
     if (submitStatus !== "success") return undefined;
@@ -839,7 +802,7 @@ const App = () => {
         </button>
         {isVoicePending && (
           <span className="robot-voice-hint" role="status">
-            Tap anywhere to hear my intro
+            {voiceError || "Click the robot to retry the introduction."}
           </span>
         )}
       </div>
@@ -999,8 +962,8 @@ const App = () => {
                     : "text-5xl lg:text-6xl font-bold text-slate-900 leading-tight"
                 }
               >
-                Hi, I'm
-                <span className="block text-cyan-400">Rushikesh Raut</span>
+                Rushikesh
+                <span className="block text-cyan-400">Raut</span>
               </h1>
               <p
                 className={
@@ -1009,8 +972,9 @@ const App = () => {
                     : "text-xl text-slate-600 leading-relaxed"
                 }
               >
-                a Full Stack Developer and AI Engineer with a Computer
-                Engineering degree and a CGPA of 9.32.
+                Computer Engineering Graduate & Full-Stack Developer passionate
+                about creating innovative solutions with AI and modern web
+                technologies.
               </p>
               <p
                 className={
@@ -1019,12 +983,22 @@ const App = () => {
                     : "text-lg text-slate-500 leading-relaxed"
                 }
               >
-                I specialize in building modern web applications and AI-powered
-                solutions using React, Next.js, Python, FastAPI, LangChain,
-                LangGraph, RAG, and Agentic AI. I enjoy solving real-world
-                problems, exploring new technologies, and turning innovative
-                ideas into impactful products.
+                Graduated in Computer Engineering from GCOEARA, Pune with a 9.32
+                CGPA, experienced in MERN stack, AI integration, and modern web
+                development.
               </p>
+              <div
+                className={
+                  isDark
+                    ? "inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-sm text-slate-300 shadow-lg shadow-black/10"
+                    : "inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white/80 px-4 py-3 text-sm text-slate-600 shadow-lg shadow-slate-200/60"
+                }
+              >
+                <span className="font-semibold text-cyan-400">&lt;/&gt;</span>
+                <span>
+                  Building clean, scalable interfaces and AI-powered apps
+                </span>
+              </div>
               <div className="flex flex-wrap gap-4 pt-4">
                 <a
                   href="mailto:rushikesh220703@gmail.com"

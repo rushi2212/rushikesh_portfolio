@@ -38,11 +38,10 @@ ElevenLabs API key on the server instead of exposing it in the browser.
 Add `ELEVENLABS_API_KEY` to the Vercel project's environment variables. The
 endpoint uses voice ID `fPIfC3elMLbN9tNwMXkw`. For local use, put the key in an
 untracked `.env.local` file and run `npm start`; the start script launches the
-React site and its local ElevenLabs API together. The robot attempts to greet
-visitors automatically, but browsers can block sound until the first click or
-keypress. When autoplay is blocked, the robot waves and prompts the visitor to
-tap or press a key. The browser's built-in speech is used if the API endpoint
-is unavailable.
+React site and its local ElevenLabs API together. The introduction is spoken
+only when the visitor clicks the robot. Playback uses the configured ElevenLabs
+voice and reports an error if the API is unavailable; it does not substitute a
+browser-generated voice.
 
 ### `npm run eject`
 

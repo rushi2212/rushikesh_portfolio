@@ -33,7 +33,31 @@ const App = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("");
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const [cursor, setCursor] = useState({ x: 0, y: 0, visible: false });
+
+  const handleRobotClick = () => {
+    if (!("speechSynthesis" in window) || typeof SpeechSynthesisUtterance === "undefined") {
+      return;
+    }
+
+    if (isSpeaking || window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+
+    const introduction = new SpeechSynthesisUtterance(
+      "Hi, I'm Rushikesh Raut. Computer Engineering Graduate and Full-Stack Developer passionate about creating innovative solutions with AI and modern web technologies. Graduated in Computer Engineering from GCOEARA, Pune with a 9.32 CGPA, experienced in MERN stack, AI integration, and modern web development. Building clean, scalable interfaces and AI-powered apps.",
+    );
+    introduction.rate = 0.96;
+    introduction.pitch = 1.02;
+    introduction.onend = () => setIsSpeaking(false);
+    introduction.onerror = () => setIsSpeaking(false);
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(introduction);
+    setIsSpeaking(true);
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -81,6 +105,13 @@ const App = () => {
     const timer = setTimeout(() => setIsLoading(false), 1500);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(
+    () => () => {
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+    },
+    [],
+  );
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -626,9 +657,13 @@ const App = () => {
         <div className="code-trace code-trace-one"></div>
         <div className="code-trace code-trace-two"></div>
       </div>
-      <div className="ambient-robots" aria-hidden="true">
-        <span
-          className="robot-3d-companion"
+      <div className="ambient-robots">
+        <button
+          type="button"
+          className={`robot-3d-companion${isSpeaking ? " is-speaking" : ""}`}
+          aria-label={isSpeaking ? "Stop introduction" : "Hear my introduction"}
+          aria-pressed={isSpeaking}
+          onClick={handleRobotClick}
           style={{
             "--scroll-offset": `${Math.sin(scrollY / 140) * 14}px`,
             "--scroll-tilt": `${Math.cos(scrollY / 180) * 8}deg`,
@@ -656,7 +691,7 @@ const App = () => {
           <i className="robot-3d-leg robot-3d-leg-right"></i>
           <i className="robot-3d-foot robot-3d-foot-left"></i>
           <i className="robot-3d-foot robot-3d-foot-right"></i>
-        </span>
+        </button>
       </div>
       <div
         className={

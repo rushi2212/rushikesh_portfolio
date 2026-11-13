@@ -1,5 +1,5 @@
 import React from "react";
-import { ExternalLink } from "lucide-react";
+import { Check, ExternalLink } from "lucide-react";
 
 export default function ProjectsSection({ projects }) {
   return (
@@ -47,7 +47,7 @@ export default function ProjectsSection({ projects }) {
                           key={featureIndex}
                           className="project-feature-row flex items-center gap-2 text-xs text-slate-600"
                         >
-                          <div className="w-1 h-1 bg-blue-600 rounded-full"></div>
+                          <Check size={13} className="project-feature-check" aria-hidden="true" />
                           {feature}
                         </div>
                       ))}

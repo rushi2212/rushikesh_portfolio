@@ -200,6 +200,42 @@ section { scroll-margin-top: 5.5rem; }
 section[id] { position: relative; }
 section[id] > .container { position: relative; }
 
+/* Ambient portfolio backdrop */
+html.dark body {
+  background:
+    radial-gradient(ellipse at 14% 7%, rgba(14,165,233,.13), transparent 30rem),
+    radial-gradient(ellipse at 88% 22%, rgba(99,102,241,.12), transparent 34rem),
+    radial-gradient(ellipse at 50% 74%, rgba(8,145,178,.07), transparent 38rem),
+    #070b14;
+  background-attachment: fixed;
+}
+html:not(.dark) body {
+  background:
+    radial-gradient(ellipse at 12% 5%, rgba(14,165,233,.10), transparent 30rem),
+    radial-gradient(ellipse at 88% 18%, rgba(99,102,241,.08), transparent 34rem),
+    radial-gradient(ellipse at 50% 72%, rgba(56,189,248,.06), transparent 38rem),
+    #f6f8fc;
+  background-attachment: fixed;
+}
+#root { position: relative; isolation: isolate; }
+#root::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  opacity: .16;
+  background-image: linear-gradient(rgba(148,163,184,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,.12) 1px, transparent 1px);
+  background-size: 58px 58px;
+  mask-image: linear-gradient(to bottom, black, transparent 78%);
+}
+#root::after {
+  content: ""; position: fixed; z-index: -1; pointer-events: none;
+  width: 32rem; height: 32rem; left: 54%; top: 6vh; border-radius: 50%;
+  background: radial-gradient(circle, rgba(34,211,238,.075), rgba(99,102,241,.035) 38%, transparent 70%);
+  filter: blur(16px); animation: ambient-drift 20s ease-in-out infinite alternate;
+}
+@keyframes ambient-drift {
+  from { transform: translate3d(-14vw, 0, 0) scale(.9); }
+  to { transform: translate3d(12vw, 14vh, 0) scale(1.14); }
+}
+
 /* Refined surfaces */
 .bg-white.rounded-2xl, .bg-white.rounded-xl,
 .bg-slate-800.rounded-2xl, .bg-slate-800.rounded-xl,
@@ -277,9 +313,9 @@ section[id]:not(#about) > .container > .text-center p { font-size: clamp(1rem, 1
 html.dark #experience .max-w-4xl > div, html.dark #education .max-w-4xl > div { background:rgba(15,23,42,.78) !important; }
 
 html.dark #projects { background: linear-gradient(180deg, rgba(15,23,42,.3), rgba(2,6,23,.08)); }
-html.dark #skills { background: linear-gradient(145deg, #0d1525, #111c2e 52%, #0b1321) !important; }
-html:not(.dark) #projects { background: linear-gradient(180deg, rgba(226,232,240,.5), rgba(248,250,252,.3)); }
-html:not(.dark) #skills { background: linear-gradient(145deg, #edf4fc, #f8fbff 54%, #eef4fb) !important; }
+html.dark #skills { background: linear-gradient(145deg, rgba(13,21,37,.78), rgba(17,28,46,.86) 52%, rgba(11,19,33,.75)) !important; }
+html:not(.dark) #projects { background: linear-gradient(180deg, rgba(226,232,240,.24), rgba(248,250,252,.18)); }
+html:not(.dark) #skills { background: linear-gradient(145deg, rgba(226,239,252,.76), rgba(248,251,255,.9) 54%, rgba(232,242,253,.76)) !important; }
 
 #projects .grid > div {
   overflow: hidden; border-radius: 1.4rem; border-color: rgba(148,163,184,.2);
@@ -316,11 +352,13 @@ html.dark .skill-count { color: #94a3b8; }
 #contact input, #contact textarea { border-radius: .8rem; transition: border-color .2s ease, box-shadow .2s ease; }
 #contact input:focus, #contact textarea:focus { border-color: #22d3ee; box-shadow: 0 0 0 4px rgba(34,211,238,.12); }
 #about { max-width: 82rem; margin: 0 auto; min-height: min(850px, 94vh); display: flex; align-items: center; padding-top: 7rem; padding-bottom: 5rem; }
+#about > div > .lg\:w-1\/2.flex.justify-center > div { margin-top: -1.6rem; }
 #about h1 { font-size: clamp(3.5rem, 8vw, 6.4rem); letter-spacing: -.075em; }
 #about p { max-width: 39rem; }
 #about img { max-height: 34rem; object-position: center 24%; }
 @media (max-width: 640px) {
   #about { min-height: auto; padding-top: 7.5rem; }
+  #about > div > .lg\:w-1\/2.flex.justify-center > div { margin-top: -.5rem; }
   #about > div { gap: 2rem; }
   #about h1 { font-size: clamp(3.3rem, 17vw, 5rem); }
   #about .flex.flex-wrap.gap-4.pt-4 a { flex: 1 1 100%; justify-content: center; }

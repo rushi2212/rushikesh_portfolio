@@ -72,11 +72,11 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [scrollY, setScrollY] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const isDark = false;
+  const isDark = true;
 
   useEffect(() => {
-    document.documentElement.classList.remove("dark");
-    document.documentElement.style.colorScheme = "light";
+    document.documentElement.classList.add("dark");
+    document.documentElement.style.colorScheme = "dark";
 
     const timer = setTimeout(() => setIsLoading(false), 1500);
     return () => clearTimeout(timer);
@@ -609,7 +609,7 @@ const App = () => {
           : "bg-gradient-to-br from-slate-50 to-blue-50 text-slate-900"
       }`}
       style={{
-        colorScheme: "light",
+        colorScheme: "dark",
         "--cursor-x": `${cursor.x}px`,
         "--cursor-y": `${cursor.y}px`,
       }}

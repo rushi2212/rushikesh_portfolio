@@ -724,3 +724,61 @@ html:not(.dark) #projects .project-card h3 { color:#172033 !important; }
   #projects .project-card-8 .project-image img { min-height:0; }
 }
 
+/* Dark theme is the only active appearance. Keep the project tiles uniform. */
+html { color-scheme:dark !important; }
+html.dark body { background:#050505; color:#f4f7fb; }
+#projects .portfolio-project-grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-auto-flow:row;
+  grid-auto-rows:1fr;
+  align-items:stretch;
+  gap:1.5rem;
+}
+#projects .portfolio-project-grid > .project-card,
+#projects .portfolio-project-grid > .project-card-1,
+#projects .portfolio-project-grid > .project-card-2,
+#projects .portfolio-project-grid > .project-card-3,
+#projects .portfolio-project-grid > .project-card-4,
+#projects .portfolio-project-grid > .project-card-5,
+#projects .portfolio-project-grid > .project-card-6,
+#projects .portfolio-project-grid > .project-card-7,
+#projects .portfolio-project-grid > .project-card-8 {
+  grid-column:span 1 !important;
+  display:flex !important;
+  min-width:0;
+  min-height:100%;
+}
+#projects .portfolio-project-grid .project-image,
+#projects .portfolio-project-grid .project-card-1 .project-image,
+#projects .portfolio-project-grid .project-card-2 .project-image,
+#projects .portfolio-project-grid .project-card-3 .project-image,
+#projects .portfolio-project-grid .project-card-4 .project-image,
+#projects .portfolio-project-grid .project-card-5 .project-image,
+#projects .portfolio-project-grid .project-card-6 .project-image,
+#projects .portfolio-project-grid .project-card-7 .project-image,
+#projects .portfolio-project-grid .project-card-8 .project-image {
+  height:14.5rem !important;
+  min-height:14.5rem !important;
+  flex:none;
+}
+#projects .portfolio-project-grid .project-image img { width:100%; height:100% !important; min-height:0 !important; object-fit:cover; }
+#projects .portfolio-project-grid > .project-card { background:linear-gradient(155deg,rgba(16,24,39,.96),rgba(8,13,23,.98)) !important; border-color:rgba(148,163,184,.15); }
+#projects .portfolio-project-grid > .project-card:hover { border-color:rgba(0,217,245,.38); }
+#projects .portfolio-project-grid > .project-card h3 { color:#f1f5f9 !important; }
+@media (max-width:1023px) {
+  #projects .portfolio-project-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width:639px) {
+  #projects .portfolio-project-grid { grid-template-columns:minmax(0,1fr); gap:1.1rem; }
+  #projects .portfolio-project-grid .project-image,
+  #projects .portfolio-project-grid .project-card-1 .project-image,
+  #projects .portfolio-project-grid .project-card-2 .project-image,
+  #projects .portfolio-project-grid .project-card-3 .project-image,
+  #projects .portfolio-project-grid .project-card-4 .project-image,
+  #projects .portfolio-project-grid .project-card-5 .project-image,
+  #projects .portfolio-project-grid .project-card-6 .project-image,
+  #projects .portfolio-project-grid .project-card-7 .project-image,
+  #projects .portfolio-project-grid .project-card-8 .project-image { height:13rem !important; min-height:13rem !important; }
+}
+

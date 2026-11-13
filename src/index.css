@@ -792,4 +792,50 @@ html.dark body { background:#050505; color:#f4f7fb; }
   background:transparent !important;
 }
 #projects .project-feature-row { padding:0 !important; }
+#projects .project-feature-row,
+#projects .project-feature-row:hover,
+#projects .project-feature-row:focus,
+#projects .project-feature-row::before,
+#projects .project-feature-row::after {
+  all:unset !important;
+  border:0 !important;
+  outline:0 !important;
+  box-shadow:none !important;
+  background:transparent !important;
+  content:none !important;
+}
+#projects .project-feature-row {
+  display:flex !important;
+  align-items:center !important;
+  gap:.5rem !important;
+  box-sizing:border-box !important;
+  color:#cbd5e1 !important;
+  font-size:.75rem !important;
+  line-height:1rem !important;
+}
+
+/* Tiny robot companions drift down different paths behind the page */
+.ambient-robots { position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
+.ambient-robot {
+  position:absolute; top:-4rem; left:var(--robot-x); display:grid; place-items:center;
+  width:2.8rem; height:2.8rem; border:1px solid rgba(0,217,245,.2); border-radius:1rem;
+  color:#72e8f5; background:linear-gradient(145deg,rgba(15,23,42,.68),rgba(8,13,23,.34));
+  box-shadow:0 0 24px rgba(0,217,245,.11),inset 0 0 16px rgba(0,217,245,.06);
+  backdrop-filter:blur(8px); opacity:.38;
+}
+.ambient-robot::after {
+  content:""; position:absolute; top:-.35rem; right:.45rem; width:.32rem; height:.32rem;
+  border-radius:50%; background:#67e8f9; box-shadow:0 0 10px rgba(0,217,245,.8);
+}
+.ambient-robot-one { --robot-x:17%; animation:robot-drop-one 31s linear infinite; }
+.ambient-robot-two { --robot-x:66%; width:2.45rem; height:2.45rem; color:#b9a7ff; border-color:rgba(139,92,246,.22); animation:robot-drop-two 38s -13s linear infinite; }
+.ambient-robot-three { --robot-x:88%; width:2.25rem; height:2.25rem; opacity:.27; animation:robot-drop-three 35s -21s linear infinite; }
+.ambient-robot-two::after { background:#a78bfa; box-shadow:0 0 10px rgba(139,92,246,.8); }
+@keyframes robot-drop-one { 0% { transform:translate3d(0,-5vh,0) rotate(-8deg); } 25% { transform:translate3d(7vw,25vh,0) rotate(5deg); } 55% { transform:translate3d(-2vw,62vh,0) rotate(-5deg); } 80% { transform:translate3d(5vw,92vh,0) rotate(7deg); } 100% { transform:translate3d(-1vw,120vh,0) rotate(-4deg); } }
+@keyframes robot-drop-two { 0% { transform:translate3d(0,-8vh,0) rotate(8deg); } 30% { transform:translate3d(-6vw,30vh,0) rotate(-6deg); } 60% { transform:translate3d(4vw,68vh,0) rotate(5deg); } 100% { transform:translate3d(-4vw,120vh,0) rotate(-8deg); } }
+@keyframes robot-drop-three { 0% { transform:translate3d(0,-6vh,0) rotate(-5deg); } 35% { transform:translate3d(-5vw,36vh,0) rotate(7deg); } 70% { transform:translate3d(3vw,78vh,0) rotate(-5deg); } 100% { transform:translate3d(-3vw,120vh,0) rotate(6deg); } }
+@media (max-width:700px) {
+  .ambient-robot { opacity:.24; }
+  .ambient-robot-three { display:none; }
+}
 

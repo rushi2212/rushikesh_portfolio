@@ -626,6 +626,11 @@ const App = () => {
         <div className="code-trace code-trace-one"></div>
         <div className="code-trace code-trace-two"></div>
       </div>
+      <div className="ambient-robots" aria-hidden="true">
+        <span className="ambient-robot ambient-robot-one"><Bot size={21} strokeWidth={1.5} /></span>
+        <span className="ambient-robot ambient-robot-two"><Bot size={18} strokeWidth={1.5} /></span>
+        <span className="ambient-robot ambient-robot-three"><Bot size={16} strokeWidth={1.5} /></span>
+      </div>
       <div
         className={
           isDark

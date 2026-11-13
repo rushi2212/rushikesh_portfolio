@@ -381,7 +381,7 @@ html.dark .skill-count { color: #94a3b8; }
 #about { max-width: 82rem; margin: 0 auto; min-height: min(850px, 94vh); display: flex; align-items: center; padding-top: 7rem; padding-bottom: 5rem; }
 #about > div > .lg\:w-1\/2.flex.justify-center > div { margin-top: -1.6rem; }
 #about .hero-photo-wrap { translate:0 0; }
-@media (min-width:1024px) { #about .hero-photo-wrap { translate:0 -1.5rem; } }
+@media (min-width:1024px) { #about .hero-photo-wrap { translate:0 -2rem; } }
 #about h1 { font-size: clamp(3.5rem, 8vw, 6.4rem); letter-spacing: -.075em; }
 #about p { max-width: 39rem; }
 #about img { max-height: 34rem; object-position: center 24%; }

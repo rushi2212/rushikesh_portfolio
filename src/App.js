@@ -40,45 +40,7 @@ const App = () => {
   const [activeSection, setActiveSection] = useState("about");
   const [cursor, setCursor] = useState({ x: 0, y: 0, visible: false });
   const audioRef = useRef(null);
-  const introAudioUrlRef = useRef(null);
-  const introAudioPromiseRef = useRef(null);
-  const loadIntroAudioRef = useRef(null);
   const voiceRequestRef = useRef(0);
-
-  loadIntroAudioRef.current = () => {
-    if (introAudioUrlRef.current) return Promise.resolve(introAudioUrlRef.current);
-    if (!introAudioPromiseRef.current) {
-      introAudioPromiseRef.current = fetch(
-        "/api/intro-voice?v=fPIfC3elMLbN9tNwMXkw-intro-v2",
-      )
-        .then((response) => {
-          if (
-            !response.ok ||
-            !response.headers.get("content-type")?.includes("audio")
-          ) {
-            return response.json().catch(() => ({})).then((errorBody) => {
-              const providerCode = errorBody.providerCode
-                ? ` (ElevenLabs code: ${errorBody.providerCode})`
-                : "";
-              throw new Error(
-                `${errorBody.error || "ElevenLabs audio is not available."}${providerCode}`,
-              );
-            });
-          }
-          return response.blob();
-        })
-        .then((audioBlob) => {
-          const audioUrl = URL.createObjectURL(audioBlob);
-          introAudioUrlRef.current = audioUrl;
-          return audioUrl;
-        })
-        .catch((error) => {
-          introAudioPromiseRef.current = null;
-          throw error;
-        });
-    }
-    return introAudioPromiseRef.current;
-  };
 
   const handleRobotClick = () => {
     if (isSpeaking) {
@@ -97,51 +59,30 @@ const App = () => {
     setIsVoicePending(false);
     setVoiceError("");
 
-    const playAudio = (audioUrl) => {
-      const audio = new Audio(audioUrl);
-      audioRef.current = audio;
-      audio.onended = () => {
-        if (voiceRequestRef.current === requestId) setIsSpeaking(false);
-        audioRef.current = null;
-      };
-      audio.onerror = () => {
-        audioRef.current = null;
-        if (voiceRequestRef.current === requestId) {
-          setIsSpeaking(false);
-          setIsVoicePending(true);
-          setVoiceError("ElevenLabs audio could not be played. Click the robot to retry.");
-        }
-      };
-      audio.play().catch((error) => {
-        if (voiceRequestRef.current !== requestId) return;
-        audioRef.current = null;
-        if (error.name === "NotAllowedError") {
-          setIsSpeaking(false);
-          setIsVoicePending(true);
-          setVoiceError("Click the robot again to allow audio playback.");
-        } else {
-          setIsSpeaking(false);
-          setIsVoicePending(true);
-          setVoiceError("ElevenLabs audio could not be played. Click the robot to retry.");
-        }
-      });
+    const audio = new Audio(`${process.env.PUBLIC_URL}/audio.mp3`);
+    audioRef.current = audio;
+    audio.onended = () => {
+      if (voiceRequestRef.current === requestId) setIsSpeaking(false);
+      audioRef.current = null;
     };
-
-    if (introAudioUrlRef.current) {
-      playAudio(introAudioUrlRef.current);
-      return;
-    }
-
-    loadIntroAudioRef.current()
-      .then((audioUrl) => {
-        if (voiceRequestRef.current === requestId) playAudio(audioUrl);
-      })
-      .catch((error) => {
-        if (voiceRequestRef.current !== requestId) return;
-        setIsSpeaking(false);
-        setIsVoicePending(true);
-        setVoiceError(error.message || "ElevenLabs is unavailable. Check the API key and server setup.");
-      });
+    audio.onerror = () => {
+      if (voiceRequestRef.current !== requestId) return;
+      audioRef.current = null;
+      setIsSpeaking(false);
+      setIsVoicePending(true);
+      setVoiceError("Could not load public/audio.mp3. Check that the audio file is in the public folder.");
+    };
+    audio.play().catch((error) => {
+      if (voiceRequestRef.current !== requestId) return;
+      audioRef.current = null;
+      setIsSpeaking(false);
+      setIsVoicePending(true);
+      setVoiceError(
+        error.name === "NotAllowedError"
+          ? "Click the robot again to allow audio playback."
+          : "Could not play public/audio.mp3. Check the audio file format.",
+      );
+    });
   };
 
   const handleChange = (e) => {
@@ -196,7 +137,6 @@ const App = () => {
   useEffect(
     () => () => {
       audioRef.current?.pause();
-      if (introAudioUrlRef.current) URL.revokeObjectURL(introAudioUrlRef.current);
     },
     [],
   );

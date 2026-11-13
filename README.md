@@ -29,19 +29,10 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-## Robot introduction voice
+## Robot introduction audio
 
-The robot requests its introduction audio from the serverless endpoint at
-`/api/intro-voice`. This endpoint is designed to run on Vercel and keeps the
-ElevenLabs API key on the server instead of exposing it in the browser.
-
-Add `ELEVENLABS_API_KEY` to the Vercel project's environment variables. The
-endpoint uses voice ID `fPIfC3elMLbN9tNwMXkw`. For local use, put the key in an
-untracked `.env.local` file and run `npm start`; the start script launches the
-React site and its local ElevenLabs API together. The introduction is spoken
-only when the visitor clicks the robot. Playback uses the configured ElevenLabs
-voice and reports an error if the API is unavailable; it does not substitute a
-browser-generated voice.
+The robot plays `public/audio.mp3` when clicked. Replace that file to update
+the robot's recorded introduction.
 
 ### `npm run eject`
 

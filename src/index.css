@@ -869,7 +869,7 @@ html.dark body { background:#050505; color:#f4f7fb; }
   display:block; width:92px; height:122px; transform-origin:top left;
   transform-style:preserve-3d; perspective:700px; opacity:.96; filter:drop-shadow(0 10px 18px rgba(0,0,0,.32));
   animation:robot-scroll-float 3.8s ease-in-out infinite;
-  transition:left .85s cubic-bezier(.2,.75,.2,1),top .85s cubic-bezier(.2,.75,.2,1),filter .3s ease;
+  transition:left .08s linear,top .08s linear,filter .3s ease;
 }
 .robot-corner-top-left { left:1.15rem; top:5.7rem; }
 .robot-corner-top-right { left:calc(100vw - 110px); top:5.7rem; }

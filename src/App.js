@@ -125,6 +125,20 @@ const App = () => {
   const isDark = true;
   const navLinkClass = (sectionId) =>
     `portfolio-nav-link${activeSection === sectionId ? " is-active" : ""}`;
+  const robotCorners = {
+    about: "bottom-right",
+    skills: "top-right",
+    projects: "bottom-left",
+    achievements: "top-left",
+    experience: "bottom-right",
+    education: "top-right",
+    certifications: "bottom-left",
+    contact: "top-right",
+  };
+  const robotCorner = robotCorners[activeSection] || robotCorners.about;
+  const robotSizeClass = ["skills", "projects", "contact", "certifications"].includes(activeSection)
+    ? "robot-size-compact"
+    : "robot-size-regular";
 
   useEffect(() => {
     document.documentElement.classList.add("dark");
@@ -155,7 +169,7 @@ const App = () => {
 
   useEffect(() => {
     if (!("IntersectionObserver" in window)) return undefined;
-    const sectionIds = ["about", "skills", "projects", "achievements", "certifications", "contact"];
+    const sectionIds = ["about", "skills", "projects", "achievements", "experience", "education", "certifications", "contact"];
     const sections = sectionIds.map((id) => document.getElementById(id)).filter(Boolean);
     const observer = new IntersectionObserver(
       (entries) => {
@@ -711,7 +725,7 @@ const App = () => {
       <div className="ambient-robots">
         <button
           type="button"
-          className={`robot-3d-companion${isSpeaking ? " is-speaking" : ""}${isVoicePending ? " is-pending" : ""}`}
+          className={`robot-3d-companion robot-corner-${robotCorner} ${robotSizeClass}${isSpeaking ? " is-speaking" : ""}${isVoicePending ? " is-pending" : ""}`}
           aria-label={isSpeaking ? "Stop introduction" : isVoicePending ? "Play introduction" : "Hear my introduction"}
           aria-pressed={isSpeaking}
           onClick={handleRobotClick}

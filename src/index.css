@@ -1082,45 +1082,54 @@ html.dark body { background:#050505; color:#f4f7fb; }
 #achievements {
   position:relative; isolation:isolate; overflow:hidden;
   background:
-    radial-gradient(ellipse 70% 42% at 50% 0%,rgba(183,129,44,.16),transparent 100%),
-    radial-gradient(ellipse 46% 64% at 0% 52%,rgba(24,87,81,.12),transparent 100%),
-    linear-gradient(180deg,#11151b 0%,#0c1118 48%,#10151d 100%) !important;
+    radial-gradient(ellipse 70% 46% at 50% 0%,rgba(198,143,54,.24),transparent 100%),
+    radial-gradient(ellipse 55% 70% at 0% 64%,rgba(17,109,98,.18),transparent 100%),
+    linear-gradient(180deg,#15171c 0%,#0d1219 48%,#11151d 100%) !important;
 }
 #achievements > .container { position:relative; z-index:1; }
 #achievements::before {
-  content:""; position:absolute; z-index:-1; top:0; left:9%; right:9%; height:1px;
-  pointer-events:none; opacity:.8;
-  background:linear-gradient(90deg,transparent,rgba(239,190,98,.36),rgba(245,222,167,.12),transparent);
-  box-shadow:0 0 32px rgba(217,168,87,.12);
+  content:"✦"; position:absolute; z-index:0; top:5rem; right:6%; width:clamp(9rem,18vw,15rem);
+  aspect-ratio:1; display:grid; place-items:center; border:2px solid rgba(246,202,112,.5);
+  border-radius:50%; color:rgba(255,225,156,.78); font:400 clamp(4rem,8vw,7rem)/1 Georgia,serif;
+  pointer-events:none; opacity:.72;
+  background:
+    radial-gradient(circle,rgba(255,218,140,.16) 0 32%,transparent 33%),
+    radial-gradient(circle,transparent 0 57%,rgba(247,201,109,.24) 57.5% 58.5%,transparent 59%),
+    radial-gradient(circle,rgba(177,117,37,.1),rgba(20,23,28,.04) 68%);
+  box-shadow:0 0 0 12px rgba(237,178,83,.055),0 0 70px rgba(233,178,78,.2),inset 0 0 34px rgba(255,215,140,.14);
 }
 #achievements::after {
-  content:""; position:absolute; z-index:-1; top:0; right:0; width:min(46vw,38rem); height:100%;
-  pointer-events:none; opacity:.36;
-  background:linear-gradient(135deg,transparent 16%,rgba(233,191,111,.035) 16.1%,transparent 16.5% 48%,rgba(233,191,111,.025) 48.1%,transparent 48.5%);
-  mask-image:linear-gradient(90deg,transparent,#000 45%,transparent);
+  content:""; position:absolute; z-index:0; inset:0; pointer-events:none; opacity:.42;
+  background-image:
+    radial-gradient(circle at 1px 1px,rgba(255,216,140,.62) 1.2px,transparent 1.8px),
+    linear-gradient(135deg,transparent 63%,rgba(238,183,89,.1) 63.15%,transparent 63.45%);
+  background-size:52px 52px,100% 100%;
+  mask-image:linear-gradient(110deg,transparent 20%,#000 78%);
 }
 #achievements .text-center h2 { color:#f4ead4; }
 #achievements .text-center p { color:#b2b5bd; }
 #contact {
   position:relative; isolation:isolate; overflow:hidden;
   background:
-    radial-gradient(ellipse 52rem 35rem at 96% 10%,rgba(18,117,153,.18),transparent 72%),
-    radial-gradient(ellipse 44rem 34rem at 4% 100%,rgba(92,72,150,.16),transparent 72%),
+    radial-gradient(ellipse 52rem 35rem at 96% 10%,rgba(18,143,179,.27),transparent 72%),
+    radial-gradient(ellipse 44rem 34rem at 4% 100%,rgba(111,83,188,.24),transparent 72%),
     linear-gradient(145deg,#0b111a 0%,#0a101a 48%,#11101c 100%) !important;
 }
 #contact > .container { position:relative; z-index:1; }
 #contact::before {
-  content:""; position:absolute; z-index:-1; top:12%; right:-12rem; width:34rem; aspect-ratio:1;
-  border-radius:50%; pointer-events:none; opacity:.62; filter:blur(2px);
-  background:radial-gradient(circle,rgba(36,174,195,.11),rgba(36,174,195,.035) 42%,transparent 70%);
+  content:""; position:absolute; z-index:0; top:8%; right:-12rem; width:38rem; aspect-ratio:1;
+  border-radius:50%; pointer-events:none; opacity:.9; filter:blur(1px);
+  background:radial-gradient(circle,rgba(36,190,207,.2),rgba(36,174,195,.075) 42%,transparent 70%);
   animation:contact-glow-drift 16s ease-in-out infinite alternate;
 }
 #contact::after {
-  content:""; position:absolute; z-index:-1; inset:0; pointer-events:none; opacity:.5;
+  content:""; position:absolute; z-index:0; inset:0; pointer-events:none; opacity:.34;
   background-image:
-    linear-gradient(132deg,transparent 0 64%,rgba(67,190,207,.045) 64.1%,transparent 64.3%),
-    linear-gradient(42deg,transparent 0 28%,rgba(146,125,210,.04) 28.1%,transparent 28.3%);
-  mask-image:linear-gradient(90deg,transparent 2%,#000 48%,transparent 100%);
+    radial-gradient(circle at 1px 1px,rgba(123,226,235,.72) 1.2px,transparent 1.8px),
+    linear-gradient(132deg,transparent 0 64%,rgba(67,190,207,.11) 64.1%,transparent 64.5%),
+    linear-gradient(42deg,transparent 0 28%,rgba(146,125,210,.1) 28.1%,transparent 28.5%);
+  background-size:42px 42px,100% 100%,100% 100%;
+  mask-image:linear-gradient(90deg,transparent 2%,#000 62%,transparent 100%);
 }
 #contact .text-center h2 { color:#f1f5f9; }
 #contact .text-center p { color:#aab8cb; }

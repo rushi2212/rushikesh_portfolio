@@ -162,26 +162,24 @@ const App = () => {
   }, [submitStatus]);
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    const sections = Array.from(document.querySelectorAll("section[id]"));
+    const updateScrollPosition = () => {
+      setScrollY(window.scrollY);
+      const scanLine = window.innerHeight * 0.46;
+      const current = sections.find((section) => {
+        const bounds = section.getBoundingClientRect();
+        return bounds.top <= scanLine && bounds.bottom > scanLine;
+      });
+      if (current) setActiveSection(current.id);
+    };
 
-  useEffect(() => {
-    if (!("IntersectionObserver" in window)) return undefined;
-    const sectionIds = ["about", "skills", "projects", "achievements", "experience", "education", "certifications", "contact"];
-    const sections = sectionIds.map((id) => document.getElementById(id)).filter(Boolean);
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const current = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-        if (current) setActiveSection(current.target.id);
-      },
-      { rootMargin: "-18% 0px -68% 0px", threshold: 0 },
-    );
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+    updateScrollPosition();
+    window.addEventListener("scroll", updateScrollPosition, { passive: true });
+    window.addEventListener("resize", updateScrollPosition);
+    return () => {
+      window.removeEventListener("scroll", updateScrollPosition);
+      window.removeEventListener("resize", updateScrollPosition);
+    };
   }, []);
 
   useEffect(() => {

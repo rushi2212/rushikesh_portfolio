@@ -1548,27 +1548,48 @@ const App = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-white py-8">
+      <footer className="portfolio-footer text-white">
         <div className="container mx-auto px-6">
-          <div className="text-center">
-            <p className="text-slate-400 mb-4">
-              © 2025 Rushikesh Raut. Crafted with passion and modern web
-              technologies.
+          <div className="footer-main">
+            <a href="#about" className="footer-brand" aria-label="Rushikesh Raut, back to top">
+              <span className="footer-monogram">RR</span>
+              <span className="footer-brand-copy">
+                <strong>Rushikesh Raut</strong>
+                <small>Full Stack Developer · AI Engineer</small>
+              </span>
+            </a>
+            <p className="footer-message">
+              Building thoughtful web experiences and practical AI products.
             </p>
-            <div className="flex justify-center gap-6">
+            <nav className="footer-nav" aria-label="Footer navigation">
+              <a href="#about">About</a>
+              <a href="#skills">Skills</a>
+              <a href="#projects">Projects</a>
+              <a href="#contact">Contact</a>
+            </nav>
+            <div className="footer-socials" aria-label="Social links">
               <a
                 href="mailto:rushikesh220703@gmail.com"
-                className="text-slate-400 hover:text-white transition-colors"
+                className="footer-social-link"
+                aria-label="Email Rushikesh"
               >
                 <Mail size={20} />
               </a>
               <a
                 href="https://linkedin.com/in/rushikeshraut2212"
-                className="text-slate-400 hover:text-white transition-colors"
+                className="footer-social-link"
+                aria-label="Rushikesh on LinkedIn"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <Linkedin size={20} />
               </a>
             </div>
+          </div>
+          <div className="footer-bottom">
+            <span>© {new Date().getFullYear()} Rushikesh Raut</span>
+            <span>Designed and built with care</span>
+            <a href="#about" className="footer-back-top">Back to top <span aria-hidden="true">↑</span></a>
           </div>
         </div>
       </footer>

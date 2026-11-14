@@ -1138,3 +1138,93 @@ html.dark body { background:#050505; color:#f4f7fb; }
   #contact::before { animation:none; }
 }
 
+/* Contact gets a brighter aurora sweep and a visible connection grid */
+#contact {
+  background:
+    radial-gradient(ellipse 56rem 38rem at 88% 8%,rgba(0,174,204,.25),transparent 72%),
+    radial-gradient(ellipse 46rem 36rem at 8% 100%,rgba(112,79,196,.23),transparent 72%),
+    linear-gradient(138deg,#09121d 0%,#0b1320 48%,#111126 100%) !important;
+}
+#contact::before {
+  top:-18%; right:-16%; width:min(78vw,70rem); height:112%;
+  border-radius:48%; filter:blur(18px); opacity:.7;
+  background:linear-gradient(128deg,transparent 22%,rgba(0,204,220,.13) 39%,rgba(73,125,225,.18) 52%,rgba(153,93,219,.14) 66%,transparent 81%);
+  transform:rotate(-13deg);
+  animation:contact-aurora-drift 18s ease-in-out infinite alternate;
+}
+#contact::after {
+  opacity:.42;
+  background-image:
+    radial-gradient(circle at 1px 1px,rgba(120,226,237,.7) 1.1px,transparent 1.7px),
+    linear-gradient(135deg,transparent 0 46%,rgba(81,197,212,.1) 46.1%,transparent 46.35%),
+    linear-gradient(45deg,transparent 0 73%,rgba(157,132,230,.09) 73.1%,transparent 73.35%);
+  background-size:38px 38px,100% 100%,100% 100%;
+  mask-image:linear-gradient(110deg,transparent 4%,#000 64%,transparent 100%);
+}
+@keyframes contact-aurora-drift {
+  from { transform:translate3d(0,-1%,0) rotate(-13deg) scale(.98); }
+  to { transform:translate3d(-2%,2%,0) rotate(-8deg) scale(1.04); }
+}
+
+/* Give the footer a clear brand, useful links and a deliberate ending */
+footer.portfolio-footer {
+  position:relative; isolation:isolate; overflow:hidden; padding:0 !important;
+  border:0 !important;
+  background:
+    radial-gradient(ellipse 45rem 24rem at 92% 0%,rgba(31,125,150,.13),transparent 75%),
+    linear-gradient(155deg,#090e16 0%,#070a11 62%,#0b0b15 100%) !important;
+}
+footer.portfolio-footer::before {
+  content:""; position:absolute; z-index:0; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(70,220,231,.78) 28%,rgba(135,112,230,.6) 72%,transparent);
+  box-shadow:0 0 24px rgba(47,203,220,.22);
+}
+footer.portfolio-footer::after {
+  content:""; position:absolute; z-index:0; right:-8rem; bottom:-13rem; width:32rem; height:25rem;
+  border-radius:50%; pointer-events:none; opacity:.5; filter:blur(30px);
+  background:radial-gradient(ellipse,rgba(92,73,164,.17),transparent 68%);
+}
+footer.portfolio-footer > .container { position:relative; z-index:1; max-width:82rem; }
+.footer-main {
+  display:grid; grid-template-columns:minmax(0,1fr) auto; grid-template-areas:"brand socials" "message nav";
+  align-items:center; gap:1.5rem 2rem; padding:3rem 0 2.25rem;
+}
+.footer-brand { grid-area:brand; display:inline-flex; align-items:center; gap:.9rem; width:max-content; color:#f8fafc; text-decoration:none; }
+.footer-monogram {
+  display:grid; place-items:center; width:2.9rem; height:2.9rem; border:1px solid rgba(103,232,249,.3);
+  border-radius:.9rem; color:#e6fbff; font-size:.95rem; font-weight:800; letter-spacing:-.06em;
+  background:linear-gradient(140deg,rgba(34,211,238,.19),rgba(99,102,241,.18));
+  box-shadow:inset 0 1px rgba(255,255,255,.11),0 0 28px rgba(34,211,238,.1);
+}
+.footer-brand-copy { display:flex; flex-direction:column; gap:.38rem; }
+.footer-brand-copy strong { color:#f1f5f9; font-size:.98rem; letter-spacing:-.02em; }
+.footer-brand-copy small { color:#8493a8; font-size:.7rem; letter-spacing:.035em; }
+.footer-message { grid-area:message; max-width:25rem; margin:0; color:#93a1b5; font-size:.86rem; line-height:1.65; }
+.footer-nav { grid-area:nav; display:flex; flex-wrap:wrap; justify-content:flex-end; gap:.45rem 1.2rem; }
+.footer-nav a,.footer-back-top { color:#aebacc; font-size:.78rem; font-weight:600; text-decoration:none; transition:color .2s ease,transform .2s ease; }
+.footer-nav a:hover,.footer-back-top:hover { color:#8ceaf1; }
+.footer-socials { grid-area:socials; display:flex; justify-content:flex-end; gap:.65rem; }
+.footer-social-link {
+  display:grid; place-items:center; width:2.65rem; height:2.65rem; border:1px solid rgba(148,163,184,.18);
+  border-radius:50%; color:#b7c4d4; background:rgba(255,255,255,.035);
+  transition:transform .22s ease,border-color .22s ease,color .22s ease,background .22s ease;
+}
+.footer-social-link:hover { transform:translateY(-3px); border-color:rgba(103,232,249,.42); color:#a5f3fc; background:rgba(34,211,238,.08); }
+.footer-bottom {
+  display:flex; align-items:center; justify-content:space-between; gap:1rem; min-height:3.8rem;
+  border-top:1px solid rgba(148,163,184,.12); color:#738197; font-size:.72rem;
+}
+.footer-back-top { display:inline-flex; align-items:center; gap:.4rem; color:#95a4b8; }
+.footer-back-top span { color:#67e8f9; font-size:1rem; transition:transform .2s ease; }
+.footer-back-top:hover span { transform:translateY(-2px); }
+@media (max-width:700px) {
+  .footer-main { grid-template-columns:1fr auto; grid-template-areas:"brand socials" "message message" "nav nav"; gap:1.25rem; padding:2.5rem 0 1.8rem; }
+  .footer-nav { justify-content:flex-start; gap:.55rem 1rem; }
+  .footer-bottom { flex-wrap:wrap; justify-content:space-between; padding:.9rem 0; }
+  .footer-bottom > span:nth-child(2) { display:none; }
+  #contact::before { right:-54%; width:125vw; opacity:.56; }
+}
+@media (prefers-reduced-motion:reduce) {
+  #contact::before { animation:none; }
+}
+

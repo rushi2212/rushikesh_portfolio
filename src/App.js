@@ -125,52 +125,6 @@ const App = () => {
   const isDark = true;
   const navLinkClass = (sectionId) =>
     `portfolio-nav-link${activeSection === sectionId ? " is-active" : ""}`;
-  const robotCorners = {
-    about: "bottom-right",
-    skills: "top-right",
-    projects: "bottom-left",
-    achievements: "top-left",
-    experience: "bottom-right",
-    education: "top-right",
-    certifications: "bottom-left",
-    contact: "top-right",
-  };
-  const robotCorner = robotCorners[activeSection] || robotCorners.about;
-  const robotSizeClass = ["skills", "projects", "contact", "certifications"].includes(activeSection)
-    ? "robot-size-compact"
-    : "robot-size-regular";
-  const viewportWidth = typeof window === "undefined" ? 1280 : window.innerWidth;
-  const viewportHeight = typeof window === "undefined" ? 800 : window.innerHeight;
-  const isSmallScreen = viewportWidth <= 700;
-  const robotScale = isSmallScreen
-    ? robotSizeClass === "robot-size-compact" ? 0.62 : 0.75
-    : robotSizeClass === "robot-size-compact" ? 0.74 : 0.94;
-  const robotWidth = 92 * robotScale;
-  const robotHeight = 122 * robotScale;
-  const maxScroll = typeof document === "undefined"
-    ? 1
-    : Math.max(1, document.documentElement.scrollHeight - viewportHeight);
-  const scrollProgress = Math.min(1, Math.max(0, scrollY / maxScroll));
-  const pathProgress = scrollProgress * 4;
-  const pathSegment = Math.min(3, Math.floor(pathProgress));
-  const segmentProgress = pathProgress - pathSegment;
-  const smoothSegment = segmentProgress * segmentProgress * (3 - 2 * segmentProgress);
-  const edge = isSmallScreen ? 12 : 18;
-  const topEdge = isSmallScreen ? 86 : 92;
-  const bottomEdge = isSmallScreen ? 14 : 18;
-  const right = viewportWidth - robotWidth - edge;
-  const bottom = viewportHeight - robotHeight - bottomEdge;
-  const robotPath = [
-    [right, bottom],
-    [edge, bottom],
-    [edge, topEdge],
-    [right, topEdge],
-    [right, bottom],
-  ];
-  const robotLeft = robotPath[pathSegment][0] +
-    (robotPath[pathSegment + 1][0] - robotPath[pathSegment][0]) * smoothSegment;
-  const robotTop = robotPath[pathSegment][1] +
-    (robotPath[pathSegment + 1][1] - robotPath[pathSegment][1]) * smoothSegment;
 
   useEffect(() => {
     document.documentElement.classList.add("dark");
@@ -755,15 +709,13 @@ const App = () => {
       <div className="ambient-robots">
         <button
           type="button"
-          className={`robot-3d-companion robot-corner-${robotCorner} ${robotSizeClass}${isSpeaking ? " is-speaking" : ""}${isVoicePending ? " is-pending" : ""}`}
+          className={`robot-3d-companion robot-corner-bottom-right robot-size-regular${isSpeaking ? " is-speaking" : ""}${isVoicePending ? " is-pending" : ""}`}
           aria-label={isSpeaking ? "Stop introduction" : isVoicePending ? "Play introduction" : "Hear my introduction"}
           aria-pressed={isSpeaking}
           onClick={handleRobotClick}
           style={{
-            left: `${robotLeft}px`,
-            top: `${robotTop}px`,
-            "--scroll-offset": `${Math.sin(scrollY / 140) * 14}px`,
-            "--scroll-tilt": `${Math.cos(scrollY / 180) * 8}deg`,
+            "--scroll-offset": "0px",
+            "--scroll-tilt": "0deg",
           }}
         >
           <i className="robot-3d-shadow"></i>

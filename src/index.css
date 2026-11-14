@@ -1065,3 +1065,69 @@ html.dark body { background:#050505; color:#f4f7fb; }
   }
 }
 
+/* Recognition and collaboration sections receive their own ambient identity */
+#achievements {
+  position:relative; isolation:isolate; overflow:hidden;
+  background:
+    radial-gradient(ellipse 45rem 32rem at 92% 6%,rgba(212,166,73,.13),transparent 72%),
+    radial-gradient(ellipse 42rem 28rem at 4% 94%,rgba(13,148,136,.11),transparent 74%),
+    linear-gradient(138deg,#0d1420 0%,#090d16 52%,#111521 100%) !important;
+}
+#achievements > .container { position:relative; z-index:1; }
+#achievements::before {
+  content:""; position:absolute; z-index:-1; top:3.5rem; right:clamp(-5rem,5vw,6rem);
+  width:clamp(15rem,32vw,27rem); aspect-ratio:1; border:1px solid rgba(245,200,104,.13);
+  border-radius:50%; opacity:.78; pointer-events:none;
+  background:
+    radial-gradient(circle,transparent 0 29%,rgba(245,200,104,.09) 29.2% 29.6%,transparent 30%),
+    radial-gradient(circle,transparent 0 47%,rgba(245,200,104,.08) 47.2% 47.6%,transparent 48%),
+    radial-gradient(circle at 50% 50%,rgba(245,200,104,.09),transparent 68%);
+  box-shadow:inset 0 0 55px rgba(212,166,73,.045),0 0 90px rgba(212,166,73,.045);
+  animation:achievement-seal-float 18s ease-in-out infinite alternate;
+}
+#achievements::after {
+  content:""; position:absolute; z-index:-1; inset:0; pointer-events:none; opacity:.16;
+  background-image:radial-gradient(rgba(243,210,143,.5) .7px,transparent .7px);
+  background-size:27px 27px;
+  mask-image:linear-gradient(115deg,transparent 12%,#000 54%,transparent 100%);
+}
+#achievements .text-center h2 { color:#f4ead4; }
+#achievements .text-center p { color:#a7b2c3; }
+#contact {
+  position:relative; isolation:isolate; overflow:hidden;
+  background:
+    radial-gradient(ellipse 42rem 30rem at 100% 0%,rgba(14,165,233,.18),transparent 72%),
+    radial-gradient(ellipse 38rem 32rem at 0% 100%,rgba(99,102,241,.17),transparent 70%),
+    linear-gradient(145deg,#080f1c 0%,#0b1020 48%,#100d20 100%) !important;
+}
+#contact > .container { position:relative; z-index:1; }
+#contact::before {
+  content:""; position:absolute; z-index:-1; left:50%; top:50%; width:min(78rem,110vw); aspect-ratio:1.9;
+  border:1px solid rgba(103,232,249,.08); border-radius:50%; pointer-events:none;
+  transform:translate(-50%,-50%) rotate(-12deg);
+  box-shadow:0 0 0 3.5rem rgba(103,232,249,.018),0 0 0 7rem rgba(129,140,248,.018),inset 0 0 70px rgba(34,211,238,.035);
+  animation:contact-orbit-drift 22s ease-in-out infinite alternate;
+}
+#contact::after {
+  content:""; position:absolute; z-index:-1; inset:0; pointer-events:none; opacity:.2;
+  background-image:
+    radial-gradient(circle at 1px 1px,rgba(125,211,252,.5) 1px,transparent 1.5px),
+    linear-gradient(rgba(125,211,252,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(125,211,252,.055) 1px,transparent 1px);
+  background-size:48px 48px,64px 64px,64px 64px;
+  mask-image:radial-gradient(ellipse at 50% 50%,#000 8%,transparent 78%);
+}
+#contact .text-center h2 { color:#f1f5f9; }
+#contact .text-center p { color:#aab8cb; }
+@keyframes achievement-seal-float {
+  from { transform:translate3d(0,-.4rem,0) rotate(-7deg); }
+  to { transform:translate3d(-1rem,1rem,0) rotate(5deg); }
+}
+@keyframes contact-orbit-drift {
+  from { transform:translate(-50%,-50%) rotate(-12deg) scale(.98); }
+  to { transform:translate(-48%,-52%) rotate(-7deg) scale(1.03); }
+}
+@media (prefers-reduced-motion:reduce) {
+  #achievements::before,#contact::before { animation:none; }
+}
+
